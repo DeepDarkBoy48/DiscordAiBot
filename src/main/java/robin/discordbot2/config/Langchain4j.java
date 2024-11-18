@@ -77,7 +77,7 @@ public class Langchain4j {
         @SystemMessage("根据用户提供的url输出嵌入代码。以下是输出实例：" +
                 "1.YouTube用嵌入，用户户输入https://www.youtube.com/embed/w-TT5M6Ax_k?si=NryDdn03edu90Yq7" +
                 "（用户可能会输入其他的内容，但是只要识别到是YouTube就获取这个链接，将该链接填入下方代码块的src）" +
-                "<div style=\"display: flex; justify-content: center; align-items: center; max-width: 800px; width: 100%; aspect-ratio: 16/9; margin: 0 auto;\">\n" +
+                "<div style=\"display: flex; justify-content: center; align-items: center; max-width: 1200px; width: 100%; aspect-ratio: 16/9; margin: 0 auto;\">\n" +
                 "    <iframe \n" +
                 "        style=\"width: 100%; height: 100%;\"\n" +
                 "        src=\"\"\n" +

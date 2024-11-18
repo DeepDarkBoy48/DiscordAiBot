@@ -25,6 +25,7 @@ import robin.discordbot2.pojo.entity.aiEntity.AiMessageFormat;
 import robin.discordbot2.pojo.entity.aiEntity.aiSearchFinalEntity;
 import robin.discordbot2.service.LangChain4jService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class MyListener extends ListenerAdapter {
         // 检查频道是否存在并发送消息
         if (channel != null) {
             channel.sendMessage(
-                    "用户 " + userTag + " 反应了 " + emoji + " in " + channelMention + ".\nJump to message: " + jumpLink)
+                            "用户 " + userTag + " 反应了 " + emoji + " in " + channelMention + ".\nJump to message: " + jumpLink)
                     .queue();
         } else {
             System.out.println("Channel '常规' not found!");
@@ -71,7 +72,7 @@ public class MyListener extends ListenerAdapter {
         // "招募.png");
         if (message.contains("ping")) {
             event.getChannel().sendMessage(
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ8WKYDQJA5ZLhUEL4r-hJqWSV0UjZtPiHOJQaTM5ssaHXjVr5dLTpnWTFZa8hB53StEc&usqp=CAU")
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ8WKYDQJA5ZLhUEL4r-hJqWSV0UjZtPiHOJQaTM5ssaHXjVr5dLTpnWTFZa8hB53StEc&usqp=CAU")
                     .queue();
             event.getChannel().sendMessage("我是DeepDarkBot，你的地牢管家").queue();
         } else if (event.isFromThread()
@@ -133,12 +134,12 @@ public class MyListener extends ListenerAdapter {
                     userMessage.put("content", message + ",最好提供网址链接");
 
                     // 将消息添加到请求体
-                    requestData.put("messages", new Map[] { systemMessage, userMessage });
+                    requestData.put("messages", new Map[]{systemMessage, userMessage});
                     requestData.put("max_tokens", 500);
                     requestData.put("temperature", 1);
                     requestData.put("top_p", 0.9);
                     requestData.put("return_citations", true);
-                    requestData.put("search_domain_filter", new String[] { "perplexity.ai" });
+                    requestData.put("search_domain_filter", new String[]{"perplexity.ai"});
                     requestData.put("return_images", true);
                     requestData.put("return_related_questions", true);
                     requestData.put("search_recency_filter", "month");
@@ -151,10 +152,10 @@ public class MyListener extends ListenerAdapter {
 
                     HttpResponse deepDarkResult2 = HttpRequest.post(url)
                             .header("Authorization", "Bearer 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") // 替换
-                                                                                                                     // <token>
-                                                                                                                     // 为您的实际
-                                                                                                                     // API
-                                                                                                                     // 令牌
+                            // <token>
+                            // 为您的实际
+                            // API
+                            // 令牌
                             .header("Content-Type", "application/json")
                             .body(jsonString) // 设置请求体
                             .execute(); // 执行请求
@@ -275,18 +276,43 @@ public class MyListener extends ListenerAdapter {
         Button option3Button = Button.danger("option3", buttonInfo.get(2));
         Button cancelButton = Button.danger("option4", "cancel");
 
-        ActionRow actionRow = ActionRow.of(option1Button, option2Button,option3Button, cancelButton);
-        //ai报告
-        String report = aiSearchFinalEntity.getAiSearchOutputEntity().getReport();
+        ActionRow actionRow = ActionRow.of(option1Button, option2Button, option3Button, cancelButton);
         //图片
         String imagesInfo = aiSearchFinalEntity.getImagesInfo();
         //发送图片
         event.getChannel().asThreadChannel().sendMessage(imagesInfo).queue();
+        //ai报告
+        String report = aiSearchFinalEntity.getAiSearchOutputEntity().getReport();
         // 发送ai报告和按钮
-        event.getChannel().asThreadChannel().sendMessage(report).setComponents(actionRow).queue();
+        //多于2000字符
+        if (report.length() > 2000) {
+            //计算应该分成几个message
+            int msgNum = 0;
+            if (report.length() % 2000 == 0) {
+                msgNum = report.length() / 2000;
+            }else {
+                msgNum = report.length() / 2000 + 1;
+            }
+            //将每个message分别发出
+            int start = 0;
+            int end = 2000;
+            for (int i = 1; i <= msgNum; i++) {
+                String subreport = report.substring(start, end);
+                if (i==msgNum){
+                    event.getChannel().asThreadChannel().sendMessage(subreport).setComponents(actionRow).queue();
+                }else {
+                    event.getChannel().asThreadChannel().sendMessage(subreport).queue();
+                }
+                start = end;
+                end = Math.min(start+2000,report.length());
+            }
+        } else {
+            //少于2000字符
+            event.getChannel().asThreadChannel().sendMessage(report).setComponents(actionRow).queue();
+        }
     }
 
-    public void createSearchButtonLoop( ButtonInteractionEvent event,aiSearchFinalEntity aiSearchFinalEntity) {
+    public void createSearchButtonLoop(ButtonInteractionEvent event, aiSearchFinalEntity aiSearchFinalEntity) {
         List<String> buttonInfo = aiSearchFinalEntity.getAiSearchOutputEntity().getButtonInfo();
 
         // 创建按钮
@@ -294,23 +320,46 @@ public class MyListener extends ListenerAdapter {
         Button option2Button = Button.success("option2", buttonInfo.get(1));
         Button option3Button = Button.danger("option3", buttonInfo.get(2));
         Button cancelButton = Button.danger("option4", "cancel");
-        ActionRow actionRow = ActionRow.of(option1Button, option2Button, option3Button,cancelButton);
-        //ai报告
-        String report = aiSearchFinalEntity.getAiSearchOutputEntity().getReport();
+        ActionRow actionRow = ActionRow.of(option1Button, option2Button, option3Button, cancelButton);
         //图片
         String imagesInfo = aiSearchFinalEntity.getImagesInfo();
         //发送图片
         event.getChannel().asThreadChannel().sendMessage(imagesInfo).queue();
+        //ai报告
+        String report = aiSearchFinalEntity.getAiSearchOutputEntity().getReport();
         // 发送ai报告和按钮
-        event.getChannel().asThreadChannel().sendMessage(report).setComponents(actionRow).queue();
-
+        if (report.length() > 2000) {
+            //计算应该分成几个message
+            int msgNum = 0;
+            if (report.length() % 2000 == 0) {
+                msgNum = report.length() / 2000;
+            }else {
+                msgNum = report.length() / 2000 + 1;
+            }
+            //将每个message分别发出
+            int start = 0;
+            int end = 2000;
+            for (int i = 1; i <= msgNum; i++) {
+                String subreport = report.substring(start, end);
+                if (i==msgNum){
+                    event.getChannel().asThreadChannel().sendMessage(subreport).setComponents(actionRow).queue();
+                }else {
+                    event.getChannel().asThreadChannel().sendMessage(subreport).queue();
+                }
+                start = end;
+                end = Math.min(start+2000,report.length());
+            }
+        } else {
+            // 发送ai报告和按钮
+            event.getChannel().asThreadChannel().sendMessage(report).setComponents(actionRow).queue();
+        }
     }
 
     @Override
     public void onButtonInteraction(ButtonInteractionEvent event) {
         // 首先延迟回复，这会让 Discord 知道我们正在处理这个交互
         event.deferReply(false).queue();
-        
+
         String buttonId = event.getComponentId();
         String id = event.getChannel().asThreadChannel().getParentChannel().getId();
 
@@ -328,7 +377,7 @@ public class MyListener extends ListenerAdapter {
 
                 // 使用 hook 发送回复
                 break;
-            
+
             case "option2":
                 // 重新搜索
                 String label2 = event.getButton().getLabel();
@@ -340,7 +389,7 @@ public class MyListener extends ListenerAdapter {
                 // 创建带按钮的搜索结果
                 createSearchButtonLoop(event, aisearchResult2);
                 break;
-            
+
             case "option3":
                 // 重新搜索
                 String label3 = event.getButton().getLabel();
@@ -352,7 +401,7 @@ public class MyListener extends ListenerAdapter {
                 // 创建带按钮的搜索结果
                 createSearchButtonLoop(event, aisearchResult3);
                 break;
-            
+
             case "option4":
                 // 取消搜索
                 event.getHook().sendMessage("搜索已取消!").queue();
@@ -360,7 +409,7 @@ public class MyListener extends ListenerAdapter {
                 event.getChannel().getHistory().retrievePast(2).queue(new Consumer<List<Message>>() {
                     @Override
                     public void accept(List<Message> messages) {
-                        for (Message message : messages){
+                        for (Message message : messages) {
                             message.delete().queue();
                         }
                     }
