@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: discordbot2
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://45.76.199.153:3307/discordBot?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
+    username: root
+    password: 123
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+
+
+openai:
+  api:
+    url: https://api.openai.com/v1/chat/completions
+
+
+
+
+
+
+
+
+
+

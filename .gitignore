@@ -1,0 +1,6 @@
+src/main/resources/.env
+
+
+/target/
+/.mvn/
+/.idea/
