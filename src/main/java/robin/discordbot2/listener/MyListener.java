@@ -49,13 +49,14 @@ public class MyListener extends ListenerAdapter {
         // TextChannel textChannel = event.getGuild().getTextChannelsByName("常规",
         // true).stream().findFirst().orElse(null);
         // 检查频道是否存在并发送消息
-        if (channel != null) {
-            channel.sendMessage(
-                            "用户 " + userTag + " 反应了 " + emoji + " in " + channelMention + ".\nJump to message: " + jumpLink)
-                    .queue();
-        } else {
-            System.out.println("Channel '常规' not found!");
-        }
+
+//        if (channel != null) {
+//            channel.sendMessage(
+//                            "用户 " + userTag + " 反应了 " + emoji + " in " + channelMention + ".\nJump to message: " + jumpLink)
+//                    .queue();
+//        } else {
+//            System.out.println("Channel '常规' not found!");
+//        }
     }
 
     // 发消息的事件
