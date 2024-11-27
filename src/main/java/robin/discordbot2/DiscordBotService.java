@@ -27,7 +27,7 @@ public class DiscordBotService {
         try {
             Dotenv dotenv = Dotenv.load();
             String discordToken = dotenv.get("discordToken");
-            
+
             // 初始化 ShardManager
             DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(discordToken)
                     .setActivity(Activity.playing("Genshin"))

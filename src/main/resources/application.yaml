@@ -11,9 +11,24 @@ spring:
       max-file-size: 10MB
       max-request-size: 100MB
 
+  data:
+    redis:
+      # 数据库
+      database: 0
+      # 主机
+      host: 45.76.199.153
+      # 端口
+      port: 6379
+      # 密码
+      password: 123
+      # 读超时
+      timeout: 5s
+      # 连接超时
+      connect-timeout: 5s
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+
 
 
 

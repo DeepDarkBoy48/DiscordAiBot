@@ -61,6 +61,7 @@
             <optional>true</optional>
         </dependency>
 
+<!--        mybatis-->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter-test</artifactId>
@@ -68,7 +69,15 @@
             <scope>test</scope>
         </dependency>
 
-<!--        JDA-->
+<!--        redisson-->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>3.23.5</version>
+        </dependency>
+
+
+        <!--        JDA-->
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
@@ -114,11 +123,7 @@
             <artifactId>langchain4j-spring-boot-starter</artifactId>
             <version>0.36.0</version>
         </dependency>
-        <dependency>
-            <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-open-ai</artifactId>
-            <version>0.36.0</version>
-        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
