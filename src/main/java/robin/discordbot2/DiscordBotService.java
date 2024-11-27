@@ -15,6 +15,7 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.springframework.stereotype.Service;
 import robin.discordbot2.commond.CommandManager;
 import robin.discordbot2.listener.MyListener;
+import robin.discordbot2.listener.MembershipListener;
 
 @Slf4j
 @Service
@@ -34,9 +35,9 @@ public class DiscordBotService {
                     .setStatus(OnlineStatus.ONLINE)
                     .setMemberCachePolicy(MemberCachePolicy.ALL)
                     .setChunkingFilter(ChunkingFilter.ALL)
-                    .enableCache(CacheFlag.ONLINE_STATUS)
-                    .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_PRESENCES)
-                    .addEventListeners(new MyListener(), new CommandManager());
+                    .enableCache(CacheFlag.ONLINE_STATUS,CacheFlag.FORUM_TAGS,CacheFlag.ROLE_TAGS)
+                    .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_PRESENCES,GatewayIntent.GUILD_MESSAGE_REACTIONS)
+                    .addEventListeners(new MyListener(), new CommandManager(),new MembershipListener());
 
             // 启动 ShardManager
             this.shardManager = builder.build();
