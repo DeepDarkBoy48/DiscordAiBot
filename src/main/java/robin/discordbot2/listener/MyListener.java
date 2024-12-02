@@ -35,6 +35,7 @@ import java.util.function.Consumer;
 public class MyListener extends ListenerAdapter {
 
     private String globalName = "";
+    private Integer messageCount = 0;
 
     // 添加反应的事件
     @Override
@@ -50,13 +51,14 @@ public class MyListener extends ListenerAdapter {
         // true).stream().findFirst().orElse(null);
         // 检查频道是否存在并发送消息
 
-//        if (channel != null) {
-//            channel.sendMessage(
-//                            "用户 " + userTag + " 反应了 " + emoji + " in " + channelMention + ".\nJump to message: " + jumpLink)
-//                    .queue();
-//        } else {
-//            System.out.println("Channel '常规' not found!");
-//        }
+        // if (channel != null) {
+        // channel.sendMessage(
+        // "用户 " + userTag + " 反应了 " + emoji + " in " + channelMention + ".\nJump to
+        // message: " + jumpLink)
+        // .queue();
+        // } else {
+        // System.out.println("Channel '常规' not found!");
+        // }
     }
 
     // 发消息的事件
@@ -73,7 +75,7 @@ public class MyListener extends ListenerAdapter {
         // "招募.png");
         if (message.contains("ping")) {
             event.getChannel().sendMessage(
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ8WKYDQJA5ZLhUEL4r-hJqWSV0UjZtPiHOJQaTM5ssaHXjVr5dLTpnWTFZa8hB53StEc&usqp=CAU")
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ8WKYDQJA5ZLhUEL4r-hJqWSV0UjZtPiHOJQaTM5ssaHXjVr5dLTpnWTFZa8hB53StEc&usqp=CAU")
                     .queue();
             event.getChannel().sendMessage("我是DeepDarkBot，你的地牢管家").queue();
         } else if (event.isFromThread()
@@ -102,6 +104,9 @@ public class MyListener extends ListenerAdapter {
                 }
                 if (forumTag.getName().equals("aisearch")) {
                     tag = "4";
+                }
+                if (forumTag.getName().equals("grok")) {
+                    tag = "5";
                 }
             }
             listener1(tag, event);
@@ -135,12 +140,12 @@ public class MyListener extends ListenerAdapter {
                     userMessage.put("content", message + ",最好提供网址链接");
 
                     // 将消息添加到请求体
-                    requestData.put("messages", new Map[]{systemMessage, userMessage});
+                    requestData.put("messages", new Map[] { systemMessage, userMessage });
                     requestData.put("max_tokens", 500);
                     requestData.put("temperature", 1);
                     requestData.put("top_p", 0.9);
                     requestData.put("return_citations", true);
-                    requestData.put("search_domain_filter", new String[]{"perplexity.ai"});
+                    requestData.put("search_domain_filter", new String[] { "perplexity.ai" });
                     requestData.put("return_images", true);
                     requestData.put("return_related_questions", true);
                     requestData.put("search_recency_filter", "month");
@@ -239,6 +244,9 @@ public class MyListener extends ListenerAdapter {
             case "4":
                 result = aisearch(event);
                 return null;
+            case "5":
+                result = grok(event);
+                break;
         }
         event.getChannel().asThreadChannel().sendMessage(result).queue();
         return result;
@@ -260,7 +268,7 @@ public class MyListener extends ListenerAdapter {
         String id = event.getChannel().asThreadChannel().getParentChannel().getId();
         AiMessageFormat aiMessageFormat = new AiMessageFormat();
         aiMessageFormat.setMessage(message);
-        //aichat
+        // aichat
         aiSearchFinalEntity aisearchResult = langchain4jservice.aisearch(id, aiMessageFormat);
 
         // 创建带按钮的搜索结果
@@ -278,37 +286,37 @@ public class MyListener extends ListenerAdapter {
         Button cancelButton = Button.danger("option4", "cancel");
 
         ActionRow actionRow = ActionRow.of(option1Button, option2Button, option3Button, cancelButton);
-        //图片
+        // 图片
         String imagesInfo = aiSearchFinalEntity.getImagesInfo();
-        //发送图片
+        // 发送图片
         event.getChannel().asThreadChannel().sendMessage(imagesInfo).queue();
-        //ai报告
+        // ai报告
         String report = aiSearchFinalEntity.getAiSearchOutputEntity().getReport();
         // 发送ai报告和按钮
-        //多于2000字符
+        // 多于2000字符
         if (report.length() > 2000) {
-            //计算应该分成几个message
+            // 计算应该分成几个message
             int msgNum = 0;
             if (report.length() % 2000 == 0) {
                 msgNum = report.length() / 2000;
-            }else {
+            } else {
                 msgNum = report.length() / 2000 + 1;
             }
-            //将每个message分别发出
+            // 将每个message分别发出
             int start = 0;
             int end = 2000;
             for (int i = 1; i <= msgNum; i++) {
                 String subreport = report.substring(start, end);
-                if (i==msgNum){
+                if (i == msgNum) {
                     event.getChannel().asThreadChannel().sendMessage(subreport).setComponents(actionRow).queue();
-                }else {
+                } else {
                     event.getChannel().asThreadChannel().sendMessage(subreport).queue();
                 }
                 start = end;
-                end = Math.min(start+2000,report.length());
+                end = Math.min(start + 2000, report.length());
             }
         } else {
-            //少于2000字符
+            // 少于2000字符
             event.getChannel().asThreadChannel().sendMessage(report).setComponents(actionRow).queue();
         }
     }
@@ -322,33 +330,33 @@ public class MyListener extends ListenerAdapter {
         Button option3Button = Button.danger("option3", buttonInfo.get(2));
         Button cancelButton = Button.danger("option4", "cancel");
         ActionRow actionRow = ActionRow.of(option1Button, option2Button, option3Button, cancelButton);
-        //图片
+        // 图片
         String imagesInfo = aiSearchFinalEntity.getImagesInfo();
-        //发送图片
+        // 发送图片
         event.getChannel().asThreadChannel().sendMessage(imagesInfo).queue();
-        //ai报告
+        // ai报告
         String report = aiSearchFinalEntity.getAiSearchOutputEntity().getReport();
         // 发送ai报告和按钮
         if (report.length() > 2000) {
-            //计算应该分成几个message
+            // 计算应该分成几个message
             int msgNum = 0;
             if (report.length() % 2000 == 0) {
                 msgNum = report.length() / 2000;
-            }else {
+            } else {
                 msgNum = report.length() / 2000 + 1;
             }
-            //将每个message分别发出
+            // 将每个message分别发出
             int start = 0;
             int end = 2000;
             for (int i = 1; i <= msgNum; i++) {
                 String subreport = report.substring(start, end);
-                if (i==msgNum){
+                if (i == msgNum) {
                     event.getChannel().asThreadChannel().sendMessage(subreport).setComponents(actionRow).queue();
-                }else {
+                } else {
                     event.getChannel().asThreadChannel().sendMessage(subreport).queue();
                 }
                 start = end;
-                end = Math.min(start+2000,report.length());
+                end = Math.min(start + 2000, report.length());
             }
         } else {
             // 发送ai报告和按钮
@@ -368,6 +376,7 @@ public class MyListener extends ListenerAdapter {
             case "option1":
                 // 重新搜索
                 String label = event.getButton().getLabel();
+                // 这个event.getHook()是用来发送消息的，必须在业务逻辑运行前就要调用，不然discord会报错
                 event.getHook().sendMessage("搜索option1：" + label).queue();
                 AiMessageFormat aiMessageFormat = new AiMessageFormat();
                 aiMessageFormat.setMessage(label);
@@ -406,7 +415,7 @@ public class MyListener extends ListenerAdapter {
             case "option4":
                 // 取消搜索
                 event.getHook().sendMessage("搜索已取消!").queue();
-                //利用consumer删除最近的两条消息
+                // 利用consumer删除最近的两条消息
                 event.getChannel().getHistory().retrievePast(2).queue(new Consumer<List<Message>>() {
                     @Override
                     public void accept(List<Message> messages) {
@@ -416,6 +425,57 @@ public class MyListener extends ListenerAdapter {
                     }
                 });
                 break;
+        }
+    }
+
+    public String grok(MessageReceivedEvent event) {
+        String message = event.getMessage().getContentRaw();
+
+        // 设置 URL 和请求头
+        String url = "https://api.x.ai/v1/chat/completions";
+        String apiKey = "xai-VLwRbjzhCBejfSBY4SsRrE3nS4j1PtdJKgpgGG9QlPcsDmg9pYbETMPwJfnGzqfPPiq6t7NPZ5iuykxt"; // 替换为实际的API密钥
+
+        // 构建请求体数据
+        Map<String, Object> requestData = new HashMap<>();
+        requestData.put("model", "grok-beta");
+        requestData.put("stream", false);
+        requestData.put("temperature", 0);
+
+        // 构建消息数组
+        List<Map<String, String>> messages = new ArrayList<>();
+
+        // 系统消息
+        Map<String, String> systemMessage = new HashMap<>();
+        systemMessage.put("role", "system");
+        systemMessage.put("content", "You are Grok, a chatbot inspired by the Hitchhikers Guide to the Galaxy.");
+        messages.add(systemMessage);
+
+        // 用户消息
+        Map<String, String> userMessage = new HashMap<>();
+        userMessage.put("role", "user");
+        userMessage.put("content", message);
+        messages.add(userMessage);
+
+        requestData.put("messages", messages);
+
+        try {
+            // 发送POST请求
+            HttpResponse response = HttpRequest.post(url)
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + apiKey)
+                    .body(JSONUtil.toJsonStr(requestData))
+                    .execute();
+
+            // 解析响应
+            String body = response.body();
+            JSONObject jsonObject = JSONUtil.parseObj(body);
+            String grokResult = jsonObject.getByPath("choices[0].message.content", String.class);
+
+            return grokResult;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Sorry, there was an error processing your request: " + e.getMessage();
         }
     }
 
