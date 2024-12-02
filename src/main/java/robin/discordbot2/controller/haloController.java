@@ -20,5 +20,4 @@ public class haloController {
         String userInfo = user.toString();
         return userInfo;
     }
-
 }

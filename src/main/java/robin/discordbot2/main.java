@@ -1,27 +1,8 @@
 package robin.discordbot2;
 
 
-import com.neovisionaries.ws.client.WebSocketFactory;
-import io.github.cdimascio.dotenv.Dotenv;
-import jakarta.annotation.PostConstruct;
-import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
-import net.dv8tion.jda.api.sharding.ShardManager;
-import net.dv8tion.jda.api.utils.ChunkingFilter;
-import net.dv8tion.jda.api.utils.MemberCachePolicy;
-import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import okhttp3.OkHttpClient;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import robin.discordbot2.commond.CommandManager;
-import robin.discordbot2.listener.MyListener;
-
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-
 
 @SpringBootApplication
 public class main {
