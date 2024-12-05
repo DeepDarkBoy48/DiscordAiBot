@@ -10,7 +10,6 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 100MB
-
   data:
     redis:
       # 数据库
@@ -28,10 +27,6 @@ spring:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
-
-
-
-
 openai:
   api:
     url: https://api.openai.com/v1/chat/completions

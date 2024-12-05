@@ -15,4 +15,6 @@ public interface LangChain4jService {
     String embediframe(String id,AiMessageFormat aiMessageFormat);
 
     aiSearchFinalEntity aisearch(String id, AiMessageFormat aiMessageFormat);
+
+    String gemini(String id, AiMessageFormat aiMessageFormat);
 }

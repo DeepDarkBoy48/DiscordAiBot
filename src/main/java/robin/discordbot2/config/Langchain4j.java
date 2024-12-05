@@ -3,6 +3,7 @@ package robin.discordbot2.config;
 import dev.langchain4j.memory.chat.ChatMemoryProvider;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.googleai.GoogleAiGeminiChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.MemoryId;
@@ -24,8 +25,65 @@ public class Langchain4j {
     public String getDiscordToken(){
         return dotenv.get("discordToken");
     }
+    public String getGoogleToken(){
+        return dotenv.get("geminiToken");
+    }
 
-    //AiAssistantHTmLFigure
+    //记忆
+    @Bean
+    public ChatMemoryProvider chatMemoryProvider() {
+        return memoryId -> MessageWindowChatMemory.builder()
+                .id(memoryId)
+                .maxMessages(30)
+                .build();
+    }
+
+    //chatgpt-4o-mini模型
+    @Bean
+    public ChatLanguageModel chatLanguageModelText() {
+        return OpenAiChatModel.builder()
+                .apiKey(getOpenaiToken())
+                .modelName("gpt-4o-mini")
+                .build();
+    }
+
+    //gemini-1.5-flash模型
+    @Bean
+    public ChatLanguageModel chatLanguageModelGeminiFlash() {
+        return GoogleAiGeminiChatModel.builder()
+                .apiKey(getGoogleToken())
+                .modelName("gemini-1.5-flash")
+                .build();
+    }
+
+    /**
+     * gemini-1.5-flash
+     * @return
+     */
+    @Bean
+    public ChatLanguageModel chatLanguageModelGeminiPro() {
+        return GoogleAiGeminiChatModel.builder()
+                .apiKey(getGoogleToken())
+                .modelName("gemini-1.5-flash")
+                .build();
+    }
+
+    /**
+     * gemini-exp-1121
+     * @return
+     */
+    @Bean
+    public ChatLanguageModel chatLanguageModelGeminiExp() {
+        return GoogleAiGeminiChatModel.builder()
+                .apiKey(getGoogleToken())
+                .modelName("gemini-exp-1121")
+                .build();
+    }
+
+    /**
+     * gpt-4o-mini
+     * @return
+     */
     @Bean
     public ChatLanguageModel chatLanguageModelHTMLFigure() {
         return OpenAiChatModel.builder()
@@ -33,6 +91,8 @@ public class Langchain4j {
                 .modelName("gpt-4o-mini")
                 .build();
     }
+
+    //deepDarkAiHTMLFigure
     public interface AiAssistantFigure {
         @SystemMessage("Output the answer according to the information. " +
                 "If the information is in Chinese, it needs to be translated into English and then the answer needs to be output. " +
@@ -49,13 +109,7 @@ public class Langchain4j {
     }
 
     //AiAssistantText
-    @Bean
-    public ChatLanguageModel chatLanguageModelText() {
-        return OpenAiChatModel.builder()
-                .apiKey(getOpenaiToken())
-                .modelName("gpt-4o-mini")
-                .build();
-    }
+
     public interface AiAssistantText {
         @SystemMessage("根据message信息输出答案，并把输出的答案用markdown包装，如大标题，代码块，加粗等")
         String chat(@MemoryId Object userId, @UserMessage("AiMessageFormat") AiMessageFormat aiMessageFormat);
@@ -67,12 +121,21 @@ public class Langchain4j {
                 .build();
     }
 
-    //论坛ai
+    //chatgpt-4o-mini
     public interface AiAssistantThreadText {
         @SystemMessage("根据message信息输出答案，并把输出的答案用markdown包装，如大标题，代码块，加粗等")
         String chat(@MemoryId Object userId, @UserMessage("AiMessageFormat") AiMessageFormat aiMessageFormat);
     }
 
+    @Bean
+    public AiAssistantThreadText deepDarkTreadAi(ChatMemoryProvider chatMemoryProvider) {
+        return AiServices.builder(AiAssistantThreadText.class)
+                .chatLanguageModel(chatLanguageModelText())
+                .chatMemoryProvider(chatMemoryProvider)
+                .build();
+    }
+
+    //embed
     public interface embed {
         @SystemMessage("根据用户提供的url输出嵌入代码。以下是输出实例：" +
                 "1.YouTube用嵌入，用户户输入https://www.youtube.com/embed/w-TT5M6Ax_k?si=NryDdn03edu90Yq7" +
@@ -95,22 +158,6 @@ public class Langchain4j {
                 "最后输出代码块给用户,用markdonw格式包装")
         String chat(@MemoryId Object userId, @UserMessage("AiMessageFormat") AiMessageFormat aiMessageFormat);
     }
-
-    @Bean
-    public ChatMemoryProvider chatMemoryProvider() {
-        return memoryId -> MessageWindowChatMemory.builder()
-                .id(memoryId)
-                .maxMessages(30)
-                .build();
-    }
-    @Bean
-    public AiAssistantThreadText deepDarkTreadAi(ChatMemoryProvider chatMemoryProvider) {
-        return AiServices.builder(AiAssistantThreadText.class)
-                .chatLanguageModel(chatLanguageModelText())
-                .chatMemoryProvider(chatMemoryProvider)
-                .build();
-    }
-
     @Bean
     public embed embed(ChatMemoryProvider chatMemoryProvider) {
         return AiServices.builder(embed.class)
@@ -146,4 +193,45 @@ public class Langchain4j {
                 .chatLanguageModel(chatLanguageModel4o())
                 .build();
     }
+
+    //gemini general service
+    public interface AiAssistantGemini {
+        @SystemMessage("You are a helpful student, helping everyone get knowledge, your output format should be markdown format, including headings, bold, italics, code blocks, ordered lists, and unordered lists. You like to answer questions with emoticons or humor.")
+        String chat(@MemoryId Object userId, @UserMessage("AiMessageFormat") AiMessageFormat aiMessageFormat);
+    }
+    @Bean
+    public AiAssistantGemini aiAssistantGemini() {
+        return AiServices.builder(AiAssistantGemini.class)
+                .chatLanguageModel(chatLanguageModelGeminiFlash())
+                .build();
+    }
+
+    //gemini cn-en translate service
+
+    /**
+     *
+     */
+    public interface AiAssistantGeminiTranslateCN2EN {
+        @SystemMessage("you are a translator, if user input Chinese, you should translate it to English")
+        AiMessageFormat chat(@UserMessage("AiMessageFormat") String message);
+    }
+    @Bean
+    public AiAssistantGeminiTranslateCN2EN aiAssistantGeminiTranslateCN2EN() {
+        return AiServices.builder(AiAssistantGeminiTranslateCN2EN.class)
+                .chatLanguageModel(chatLanguageModelGeminiFlash())
+                .build();
+    }
+
+    //gemini en-cn translate service
+    public interface AiAssistantGeminiTranslateEN2CN {
+        @SystemMessage("you are a translator, if user input English, you should translate it to Chinese")
+        AiMessageFormat chat(@UserMessage("AiMessageFormat") String message);
+    }
+    @Bean
+    public AiAssistantGeminiTranslateEN2CN aiAssistantGeminiTranslateEN2CN() {
+        return AiServices.builder(AiAssistantGeminiTranslateEN2CN.class)
+                .chatLanguageModel(chatLanguageModelGeminiFlash())
+                .build();
+    }
+
 }

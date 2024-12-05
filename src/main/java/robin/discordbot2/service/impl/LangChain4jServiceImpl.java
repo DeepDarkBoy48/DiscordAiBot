@@ -9,6 +9,7 @@ import dev.langchain4j.model.openai.OpenAiImageModel;
 import dev.langchain4j.model.output.Response;
 import gui.ava.html.image.generator.HtmlImageGenerator;
 import io.github.cdimascio.dotenv.Dotenv;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import robin.discordbot2.config.Langchain4j;
@@ -36,6 +37,12 @@ public class LangChain4jServiceImpl implements LangChain4jService {
     private Langchain4j.embed embed;
     @Autowired
     private Langchain4j.aiSearchTavily aiSearchTavily;
+    @Autowired
+    private Langchain4j.AiAssistantGemini gemini;
+    @Resource
+    private Langchain4j.AiAssistantGeminiTranslateEN2CN geminiTranslateEN2CN;
+    @Resource
+    private Langchain4j.AiAssistantGeminiTranslateCN2EN geminiTranslateCN2EN;
 
     private final Dotenv dotenv = Dotenv.load();
 
@@ -150,5 +157,14 @@ public class LangChain4jServiceImpl implements LangChain4jService {
         aiSearchFinalEntity.setAiSearchOutputEntity(aiSearchOutputEntity);
 
         return aiSearchFinalEntity;
+    }
+
+    @Override
+    public String gemini(String id, AiMessageFormat aiMessageFormat) {
+//        AiMessageFormat translator1 = geminiTranslateCN2EN.chat(aiMessageFormat.getMessage());
+//        String content = gemini.chat(id, translator1);
+        String content2 = gemini.chat(id, aiMessageFormat);
+//        AiMessageFormat translator2 = geminiTranslateEN2CN.chat(content);
+        return content2;
     }
 }
