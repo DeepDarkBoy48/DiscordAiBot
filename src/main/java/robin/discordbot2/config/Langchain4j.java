@@ -29,7 +29,10 @@ public class Langchain4j {
         return dotenv.get("geminiToken");
     }
 
-    //记忆
+    /**
+     * chat memory provider
+     * @return
+     */
     @Bean
     public ChatMemoryProvider chatMemoryProvider() {
         return memoryId -> MessageWindowChatMemory.builder()
@@ -38,7 +41,10 @@ public class Langchain4j {
                 .build();
     }
 
-    //chatgpt-4o-mini模型
+    /**
+     * chatgpt-4o-mini模型
+     * @return
+     */
     @Bean
     public ChatLanguageModel chatLanguageModelText() {
         return OpenAiChatModel.builder()
@@ -47,12 +53,30 @@ public class Langchain4j {
                 .build();
     }
 
-    //gemini-1.5-flash模型
+    /**
+     * chatgpt-4o模型
+     * @return
+     */
+    @Bean
+    public ChatLanguageModel chatLanguageModel4o() {
+        return OpenAiChatModel.builder()
+                .apiKey(getOpenaiToken())
+//                .responseFormat("json_schema")
+//                .strictJsonSchema(true)
+                .modelName("gpt-4o")
+                .build();
+    }
+
+    /**
+     * gemini-1.5-flash模型
+     * @return
+     */
     @Bean
     public ChatLanguageModel chatLanguageModelGeminiFlash() {
         return GoogleAiGeminiChatModel.builder()
                 .apiKey(getGoogleToken())
                 .modelName("gemini-1.5-flash")
+                .maxOutputTokens(100)
                 .build();
     }
 
@@ -166,16 +190,11 @@ public class Langchain4j {
                 .build();
     }
 
-    //ai search tavily
-    @Bean
-    public ChatLanguageModel chatLanguageModel4o() {
-        return OpenAiChatModel.builder()
-                .apiKey(getOpenaiToken())
-//                .responseFormat("json_schema")
-//                .strictJsonSchema(true)
-                .modelName("gpt-4o")
-                .build();
-    }
+    /**
+     * ai search tavily
+     * @return
+     */
+
     public interface aiSearchTavily {
         @SystemMessage("请根据 resultInfo 中提供的信息同时结合自己本身的知识，重新整理并编辑成一篇文章。文章需满足以下要求：\n" +
                 "1. **内容完整性**：尽可能涵盖 resultInfo 中的所有信息同时结合自己本身的知识。\n" +
@@ -194,9 +213,11 @@ public class Langchain4j {
                 .build();
     }
 
-    //gemini general service
+    /**
+     * gemini general service
+     */
     public interface AiAssistantGemini {
-        @SystemMessage("You are a helpful student, helping everyone get knowledge, your output format should be markdown format, including headings, bold, italics, code blocks, ordered lists, and unordered lists. You like to answer questions with emoticons or humor.")
+        @SystemMessage("You are a helpful student, helping everyone get knowledge, your output format should be markdown format, including headings, bold, italics, code blocks, ordered lists, and unordered lists. You like to answer questions with emoticons or humor. The message you receive is in a Json format (AiMessageFormat(message=hi)),you should reply based on the message content.")
         String chat(@MemoryId Object userId, @UserMessage("AiMessageFormat") AiMessageFormat aiMessageFormat);
     }
     @Bean
@@ -206,10 +227,8 @@ public class Langchain4j {
                 .build();
     }
 
-    //gemini cn-en translate service
-
     /**
-     *
+     * gemini cn-en translate service
      */
     public interface AiAssistantGeminiTranslateCN2EN {
         @SystemMessage("you are a translator, if user input Chinese, you should translate it to English")
@@ -222,7 +241,9 @@ public class Langchain4j {
                 .build();
     }
 
-    //gemini en-cn translate service
+    /**
+     * gemini en-cn translate service
+     */
     public interface AiAssistantGeminiTranslateEN2CN {
         @SystemMessage("you are a translator, if user input English, you should translate it to Chinese")
         AiMessageFormat chat(@UserMessage("AiMessageFormat") String message);

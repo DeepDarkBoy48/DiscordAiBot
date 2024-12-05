@@ -16,5 +16,9 @@ public interface LangChain4jService {
 
     aiSearchFinalEntity aisearch(String id, AiMessageFormat aiMessageFormat);
 
+    String grok(String message);
+
     String gemini(String id, AiMessageFormat aiMessageFormat);
+
+    aiSearchFinalEntity aisearchNSFW(String id, AiMessageFormat aiMessageFormat);
 }

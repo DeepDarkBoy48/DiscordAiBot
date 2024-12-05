@@ -1,5 +1,7 @@
 package robin.discordbot2.service.impl;
 
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -21,6 +23,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -160,11 +163,57 @@ public class LangChain4jServiceImpl implements LangChain4jService {
     }
 
     @Override
+    public String grok(String message) {
+        // 设置 URL 和请求头
+        String url = "https://api.x.ai/v1/chat/completions";
+        String apiKey = "xai-VLwRbjzhCBejfSBY4SsRrE3nS4j1PtdJKgpgGG9QlPcsDmg9pYbETMPwJfnGzqfPPiq6t7NPZ5iuykx"; // 替换为实际的API密钥
+        // 构建请求体数据
+        Map<String, Object> requestData = new HashMap<>();
+        requestData.put("model", "grok-beta");
+        requestData.put("stream", false);
+        requestData.put("temperature", 0);
+        // 构建消息数组
+        List<Map<String, String>> messages = new ArrayList<>();
+        // 系统消息
+        Map<String, String> systemMessage = new HashMap<>();
+        systemMessage.put("role", "system");
+        systemMessage.put("content", "You are Grok, a chatbot inspired by the Hitchhikers Guide to the Galaxy.");
+        messages.add(systemMessage);
+        // 用户消息
+        Map<String, String> userMessage = new HashMap<>();
+        userMessage.put("role", "user");
+        userMessage.put("content", message);
+        messages.add(userMessage);
+        requestData.put("messages", messages);
+        try {
+            // 发送POST请求
+            HttpResponse response = HttpRequest.post(url)
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + apiKey)
+                    .body(JSONUtil.toJsonStr(requestData))
+                    .execute();
+            // 解析响应
+            String body = response.body();
+            JSONObject jsonObject = JSONUtil.parseObj(body);
+            String grokResult = jsonObject.getByPath("choices[0].message.content", String.class);
+            return grokResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Sorry, there was an error processing your request: " + e.getMessage();
+        }
+    }
+
+    @Override
     public String gemini(String id, AiMessageFormat aiMessageFormat) {
-//        AiMessageFormat translator1 = geminiTranslateCN2EN.chat(aiMessageFormat.getMessage());
-//        String content = gemini.chat(id, translator1);
-        String content2 = gemini.chat(id, aiMessageFormat);
-//        AiMessageFormat translator2 = geminiTranslateEN2CN.chat(content);
-        return content2;
+        AiMessageFormat translator1 = geminiTranslateCN2EN.chat(aiMessageFormat.getMessage());
+        String content = gemini.chat(id, translator1);
+//        String content2 = gemini.chat(id, aiMessageFormat);
+        AiMessageFormat translator2 = geminiTranslateEN2CN.chat(content);
+        return translator2.getMessage();
+    }
+
+    @Override
+    public aiSearchFinalEntity aisearchNSFW(String id, AiMessageFormat aiMessageFormat) {
+        return null;
     }
 }
