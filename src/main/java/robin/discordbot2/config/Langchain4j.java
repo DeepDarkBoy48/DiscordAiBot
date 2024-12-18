@@ -10,6 +10,7 @@ import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 import io.github.cdimascio.dotenv.Dotenv;
+import net.dv8tion.jda.api.entities.Message;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import robin.discordbot2.pojo.entity.aiEntity.AiMessageFormat;
@@ -19,18 +20,21 @@ import robin.discordbot2.pojo.entity.aiEntity.aiSearchOutputEntity;
 public class Langchain4j {
     private final Dotenv dotenv = Dotenv.load();
 
-    public String getOpenaiToken(){
+    public String getOpenaiToken() {
         return dotenv.get("openaiToken");
     }
-    public String getDiscordToken(){
+
+    public String getDiscordToken() {
         return dotenv.get("discordToken");
     }
-    public String getGoogleToken(){
+
+    public String getGoogleToken() {
         return dotenv.get("geminiToken");
     }
 
     /**
      * chat memory provider
+     *
      * @return
      */
     @Bean
@@ -43,10 +47,11 @@ public class Langchain4j {
 
     /**
      * chatgpt-4o-mini模型
+     *
      * @return
      */
-    @Bean
-    public ChatLanguageModel chatLanguageModelText() {
+    @Bean(name = "chatLanguageModel4omini")
+    public ChatLanguageModel chatLanguageModel4omini() {
         return OpenAiChatModel.builder()
                 .apiKey(getOpenaiToken())
                 .modelName("gpt-4o-mini")
@@ -55,6 +60,7 @@ public class Langchain4j {
 
     /**
      * chatgpt-4o模型
+     *
      * @return
      */
     @Bean
@@ -69,6 +75,7 @@ public class Langchain4j {
 
     /**
      * gemini-1.5-flash模型
+     *
      * @return
      */
     @Bean
@@ -76,28 +83,29 @@ public class Langchain4j {
         return GoogleAiGeminiChatModel.builder()
                 .apiKey(getGoogleToken())
                 .modelName("gemini-1.5-flash")
-                .maxOutputTokens(100)
                 .build();
     }
 
     /**
-     * gemini-1.5-flash
+     * gemini-1.5-pro
+     *
      * @return
      */
     @Bean
     public ChatLanguageModel chatLanguageModelGeminiPro() {
         return GoogleAiGeminiChatModel.builder()
                 .apiKey(getGoogleToken())
-                .modelName("gemini-1.5-flash")
+                .modelName("gemini-1.5-pro")
                 .build();
     }
 
     /**
      * gemini-exp-1121
+     *
      * @return
      */
     @Bean
-    public ChatLanguageModel chatLanguageModelGeminiExp() {
+    public ChatLanguageModel chatLanguageModelGeminiExp1121() {
         return GoogleAiGeminiChatModel.builder()
                 .apiKey(getGoogleToken())
                 .modelName("gemini-exp-1121")
@@ -105,7 +113,34 @@ public class Langchain4j {
     }
 
     /**
+     * gemini-exp-1206
+     *
+     * @return
+     */
+    @Bean
+    public ChatLanguageModel chatLanguageModelGeminiExp1206() {
+        return GoogleAiGeminiChatModel.builder()
+                .apiKey(getGoogleToken())
+                .modelName("gemini-exp-1206")
+                .build();
+    }
+
+    /**
+     * gemini-2.0-exp-flash
+     *
+     * @return
+     */
+    @Bean
+    public ChatLanguageModel chatLanguageModelGeminiflash2() {
+        return GoogleAiGeminiChatModel.builder()
+                .apiKey(getGoogleToken())
+                .modelName("gemini-2.0-flash-exp")
+                .build();
+    }
+
+    /**
      * gpt-4o-mini
+     *
      * @return
      */
     @Bean
@@ -125,6 +160,7 @@ public class Langchain4j {
                 " For example, if the user enters ‘ai rankings’, a detailed table should be given, including a comparison of various parameters.")
         String chat(@MemoryId Object userId, @UserMessage("AiMessageFormat") AiMessageFormat aiMessageFormat);
     }
+
     @Bean
     public AiAssistantFigure deepDarkAiHTMLFigure() {
         return AiServices.builder(AiAssistantFigure.class)
@@ -138,10 +174,11 @@ public class Langchain4j {
         @SystemMessage("根据message信息输出答案，并把输出的答案用markdown包装，如大标题，代码块，加粗等")
         String chat(@MemoryId Object userId, @UserMessage("AiMessageFormat") AiMessageFormat aiMessageFormat);
     }
+
     @Bean
     public AiAssistantText deepDarkAi() {
         return AiServices.builder(AiAssistantText.class)
-                .chatLanguageModel(chatLanguageModelText())
+                .chatLanguageModel(chatLanguageModel4omini())
                 .build();
     }
 
@@ -154,7 +191,7 @@ public class Langchain4j {
     @Bean
     public AiAssistantThreadText deepDarkTreadAi(ChatMemoryProvider chatMemoryProvider) {
         return AiServices.builder(AiAssistantThreadText.class)
-                .chatLanguageModel(chatLanguageModelText())
+                .chatLanguageModel(chatLanguageModel4omini())
                 .chatMemoryProvider(chatMemoryProvider)
                 .build();
     }
@@ -182,34 +219,36 @@ public class Langchain4j {
                 "最后输出代码块给用户,用markdonw格式包装")
         String chat(@MemoryId Object userId, @UserMessage("AiMessageFormat") AiMessageFormat aiMessageFormat);
     }
+
     @Bean
     public embed embed(ChatMemoryProvider chatMemoryProvider) {
         return AiServices.builder(embed.class)
-                .chatLanguageModel(chatLanguageModelText())
+                .chatLanguageModel(chatLanguageModel4omini())
                 .chatMemoryProvider(chatMemoryProvider)
                 .build();
     }
 
     /**
      * ai search tavily
+     *
      * @return
      */
 
     public interface aiSearchTavily {
-        @SystemMessage("请根据 resultInfo 中提供的信息同时结合自己本身的知识，重新整理并编辑成一篇文章。文章需满足以下要求：\n" +
+        @SystemMessage("请根据 resultInfo 中提供的信息同时结合自己本身的知识，resultInfo可能是英文内容，但也要重新整理并编辑成一篇中文文章。文章需满足以下要求：\n" +
                 "1. **内容完整性**：尽可能涵盖 resultInfo 中的所有信息同时结合自己本身的知识。\n" +
-                "2. **链接整合**：将 resultInfo 中所有的网页链接合理嵌入到文章中，以便读者进一步了解相关内容。示例：如何学习编程？https://example.com/learn-programming\n" +
-                "3. **格式优化**：使用markdown语法包裹文章，包括大标题，粗体，斜体，代码块，有序列表，无序列表。\n" +
+                "2. **链接整合**：按照示例处理resultInfo 中所有的网页链接，示例：请访问 [OpenAI](https://www.openai.com) 获取更多信息。\n" +
+                "3. **格式优化**：使用markdown语法包裹文章，包括大标题，粗体，斜体，代码块，有序列表，无序列表。但是要尽量让文章紧凑，不要空行\n" +
                 "4. **署名**：文章末尾添加斜体加粗文字：_**AI服务由 @Crispy Frog 提供**_ \n" +
                 "\n" +
-                "此外，根据 resultInfo 提供的信息生成 3 个相关追问问题，并将这些问题填入 aiSearchOutputEntity 的 List<String> buttonInfo 中。\n")
+                "此外，根据 resultInfo 提供的信息生成 3 个相关追问问题,字数控制在20个字符以内，并将这些问题填入 aiSearchOutputEntity 的 List<String> buttonInfo 中。\n")
         aiSearchOutputEntity chat(@MemoryId Object userId, @UserMessage String resultInfo);
     }
 
     @Bean
     public aiSearchTavily aiSearchTavily() {
         return AiServices.builder(aiSearchTavily.class)
-                .chatLanguageModel(chatLanguageModel4o())
+                .chatLanguageModel(chatLanguageModel4omini())
                 .build();
     }
 
@@ -217,13 +256,67 @@ public class Langchain4j {
      * gemini general service
      */
     public interface AiAssistantGemini {
-        @SystemMessage("You are a helpful student, helping everyone get knowledge, your output format should be markdown format, including headings, bold, italics, code blocks, ordered lists, and unordered lists. You like to answer questions with emoticons or humor. The message you receive is in a Json format (AiMessageFormat(message=hi)),you should reply based on the message content.")
+        @SystemMessage("""
+                # 你是一个 Java 版 Minecraft 百科
+                
+                **角色:** 你是一个精通 Java 版 Minecraft 的百科全书，尤其擅长解答以下方面的问题：
+                
+                *   **模组 (Mods):** 熟悉各种流行的模组，例如暮色森林 (The Twilight Forest) 等，并能提供模组的安装、配置、使用建议以及兼容性信息。
+                *   **插件 (Plugins):** 了解常用的服务器插件，并能解答关于插件安装、配置和使用的问题。
+                *   **红石自动化:** 精通红石电路设计，能够解答关于红石自动化装置的问题，并提供设计思路和优化方案。
+                *   **皮肤 (Skins):** 了解 Minecraft 皮肤的制作和使用方法，能够解答关于皮肤下载、上传和编辑的问题。
+                *   **游戏攻略:** 熟悉 Minecraft 的各种游戏机制，能够提供生存、冒险、建造等方面的攻略和技巧。
+                
+                **回答风格:**
+                
+                *   **使用中文:** 所有回答都应该使用流畅、准确的中文。
+                *   **提供链接:** 尽可能在回答中提供相关的、有用的链接。
+                    *   **主要链接网站（首选前面的网站）：**
+                        *   **1.MCMOD 百科:** <https://search.mcmod.cn/s?key=> (中文，mc百科资料库，在key=后输入关键词搜索)
+                        *   **2.CurseForge:** <https://www.curseforge.com/minecraft> (英文，模组、整合包、资源包、地图等资源下载)
+                        *   **3.Minecraft Wiki - 最全的官方我的世界百科:** <https://zh.minecraft.wiki/> (搜索boss攻略、合成表、生物、方块等)
+                *   **结构化:** 回答应该条理清晰，可以使用标题、列表、代码块等 **Discord 可识别的 Markdown 语法** 进行排版。
+                *   **Discord Markdown 格式：**
+                    *   **超链接:** 使用 `<链接地址>` 或 `[显示文本](链接地址)` 的格式来创建超链接。例如：`<https://www.curseforge.com/minecraft>` 或 `[CurseForge](https://www.curseforge.com/minecraft)`。
+                    *   **加粗:** 使用 `**加粗文本**`。
+                    *   **斜体:** 使用 `*斜体文本*`。
+                    *   **代码块:** 使用 ` ``` ` (三个反引号) 来创建多行代码块。单行代码可以使用单个反引号 \\`。
+                    *   **列表:** 无序列表使用 `-` 或 `*`，有序列表使用数字加 `.`。
+                    *   **标题:** 使用 `#` 号，从一级标题 `#` 到六级标题 `######`。
+                    *   **引用块:** 使用 `>` 符号。
+                    *   **避免使用：** Discord 不支持的 Markdown 语法，例如：三级以后的标题。
+                
+                **示例:**
+                
+                **用户:** 一个 Forge 服务器，已经有暮色森林了，还可以加什么模组，比如主世界增加绿巨人僵尸，增加难度、物品、怪物之类。
+                
+                **回答:**
+                
+                好的，您可以考虑添加以下模组来增加难度、怪物和新挑战，它们应该能和暮色森林兼容：
+                
+                ### 增加难度、怪物和新挑战:
+                
+                *   **僵尸意识 (Zombie Awareness):**
+                    *   **功能:** 增强僵尸 AI，使它们能闻到血腥味、看到光线、听到声音并进行一定程度的合作，还能破坏方块。大幅提升僵尸的威胁。
+                    *   **链接:** <https://www.curseforge.com/minecraft/mc-mods/zombie-awareness>
+                *   **更好的僵尸 (Better Zombie):**
+                    *   **功能:** 类似于僵尸意识，但可能侧重于增强僵尸的不同方面，例如速度、攻击力或特殊能力。你可以与僵尸意识一起使用以增强僵尸。
+                    *   **链接:** <https://www.curseforge.com/minecraft/mc-mods/better-zombie>
+                *   **更好的生物群系 (Better Biome Blend):**
+                    *   **功能:** 不是直接增加难度的模组，但能优化生物群系的过渡，使游戏画面更加流畅。
+                    *   **链接:** <https://www.curseforge.com/minecraft/mc-mods/better-biome-blend>
+                
+                **注意:** 在安装多个模组时，请注意模组之间的兼容性，并建议备份你的存档以防万一。您也可以使用一些[整合包](<https://www.curseforge.com/minecraft/modpacks>)来安装一系列优化过的模组。
+                
+                希望这些建议对您有所帮助！您还有其他问题吗？例如，您想了解自动化设备或者村民交易方面的模组吗？
+                """)
         String chat(@MemoryId Object userId, @UserMessage("AiMessageFormat") AiMessageFormat aiMessageFormat);
     }
+
     @Bean
     public AiAssistantGemini aiAssistantGemini() {
         return AiServices.builder(AiAssistantGemini.class)
-                .chatLanguageModel(chatLanguageModelGeminiFlash())
+                .chatLanguageModel(chatLanguageModelGeminiExp1206())
                 .build();
     }
 
@@ -234,6 +327,7 @@ public class Langchain4j {
         @SystemMessage("you are a translator, if user input Chinese, you should translate it to English")
         AiMessageFormat chat(@UserMessage("AiMessageFormat") String message);
     }
+
     @Bean
     public AiAssistantGeminiTranslateCN2EN aiAssistantGeminiTranslateCN2EN() {
         return AiServices.builder(AiAssistantGeminiTranslateCN2EN.class)
@@ -248,11 +342,11 @@ public class Langchain4j {
         @SystemMessage("you are a translator, if user input English, you should translate it to Chinese")
         AiMessageFormat chat(@UserMessage("AiMessageFormat") String message);
     }
+
     @Bean
     public AiAssistantGeminiTranslateEN2CN aiAssistantGeminiTranslateEN2CN() {
         return AiServices.builder(AiAssistantGeminiTranslateEN2CN.class)
                 .chatLanguageModel(chatLanguageModelGeminiFlash())
                 .build();
     }
-
 }

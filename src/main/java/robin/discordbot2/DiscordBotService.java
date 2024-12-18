@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import robin.discordbot2.commond.CommandManager;
 import robin.discordbot2.listener.ChannelListener;
 import robin.discordbot2.listener.ForumListener;
+import robin.discordbot2.listener.PingListener;
 import robin.discordbot2.listener.ReactionListener;
 
 @Slf4j
@@ -38,7 +39,7 @@ public class DiscordBotService {
                     .setChunkingFilter(ChunkingFilter.ALL)
                     .enableCache(CacheFlag.ONLINE_STATUS,CacheFlag.FORUM_TAGS,CacheFlag.ROLE_TAGS)
                     .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_PRESENCES,GatewayIntent.GUILD_MESSAGE_REACTIONS)
-                    .addEventListeners(new ForumListener(), new CommandManager(),new ReactionListener(),new ChannelListener());
+                    .addEventListeners(new ForumListener(), new CommandManager(),new ReactionListener(),new ChannelListener(),new PingListener());
 
             // 启动 ShardManager
             this.shardManager = builder.build();

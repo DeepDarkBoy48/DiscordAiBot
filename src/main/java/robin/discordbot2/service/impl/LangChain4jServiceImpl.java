@@ -6,15 +6,23 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import dev.langchain4j.data.image.Image;
+import dev.langchain4j.memory.chat.ChatMemoryProvider;
+import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.openai.OpenAiImageModel;
 import dev.langchain4j.model.output.Response;
+import dev.langchain4j.service.AiServices;
+import dev.langchain4j.service.SystemMessage;
+import dev.langchain4j.service.UserMessage;
 import gui.ava.html.image.generator.HtmlImageGenerator;
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.annotation.Resource;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import robin.discordbot2.config.Langchain4j;
+import robin.discordbot2.listener.ChannelListener;
 import robin.discordbot2.pojo.entity.aiEntity.*;
 import robin.discordbot2.service.LangChain4jService;
 
@@ -46,6 +54,8 @@ public class LangChain4jServiceImpl implements LangChain4jService {
     private Langchain4j.AiAssistantGeminiTranslateEN2CN geminiTranslateEN2CN;
     @Resource
     private Langchain4j.AiAssistantGeminiTranslateCN2EN geminiTranslateCN2EN;
+//    @Resource
+//    private Langchain4j.AiAssistantPlayground aiPlayground;
 
     private final Dotenv dotenv = Dotenv.load();
 
@@ -55,6 +65,10 @@ public class LangChain4jServiceImpl implements LangChain4jService {
 
     public String getDiscordToken() {
         return dotenv.get("discordToken");
+    }
+
+    public String getGrokToken() {
+        return dotenv.get("grokToken");
     }
 
     public ImageModel chatLanguageModelImage = OpenAiImageModel.builder()
@@ -112,14 +126,14 @@ public class LangChain4jServiceImpl implements LangChain4jService {
 
     @Override
     public aiSearchFinalEntity aisearch(String id, AiMessageFormat aiMessageFormat) {
-        Map<String, Object> requestData = new HashMap<>();
         String url = "https://api.tavily.com/search";
         String apiKey = "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";
+        List<String> domains = new ArrayList<>();
         boolean include_images = true;
         boolean include_images_descriptions = false;
-        String search_depth = "basic";
+        String search_depth = "advanced";
         String query = aiMessageFormat.getMessage();
-        Boolean include_raw_content = true;
+        Boolean include_raw_content = false;
         // 构建请求数据
         JSONObject data = new JSONObject();
         data.put("api_key", apiKey);
@@ -128,6 +142,7 @@ public class LangChain4jServiceImpl implements LangChain4jService {
         data.put("include_images_descriptions", include_images_descriptions);
         data.put("search_depth", search_depth);
         data.put("include_raw_content",include_raw_content);
+//        data.put("include_domains", domains);
         // 发送 POST 请求
         String response = HttpUtil.post(url, data.toString());
         JSONObject jsonObject = JSONUtil.parseObj(response);
@@ -166,7 +181,6 @@ public class LangChain4jServiceImpl implements LangChain4jService {
     public String grok(String message) {
         // 设置 URL 和请求头
         String url = "https://api.x.ai/v1/chat/completions";
-        String apiKey = "xai-VLwRbjzhCBejfSBY4SsRrE3nS4j1PtdJKgpgGG9QlPcsDmg9pYbETMPwJfnGzqfPPiq6t7NPZ5iuykx"; // 替换为实际的API密钥
         // 构建请求体数据
         Map<String, Object> requestData = new HashMap<>();
         requestData.put("model", "grok-beta");
@@ -189,7 +203,7 @@ public class LangChain4jServiceImpl implements LangChain4jService {
             // 发送POST请求
             HttpResponse response = HttpRequest.post(url)
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + apiKey)
+                    .header("Authorization", "Bearer " + getGrokToken())
                     .body(JSONUtil.toJsonStr(requestData))
                     .execute();
             // 解析响应
@@ -205,15 +219,17 @@ public class LangChain4jServiceImpl implements LangChain4jService {
 
     @Override
     public String gemini(String id, AiMessageFormat aiMessageFormat) {
-        AiMessageFormat translator1 = geminiTranslateCN2EN.chat(aiMessageFormat.getMessage());
-        String content = gemini.chat(id, translator1);
-//        String content2 = gemini.chat(id, aiMessageFormat);
-        AiMessageFormat translator2 = geminiTranslateEN2CN.chat(content);
-        return translator2.getMessage();
+//        AiMessageFormat translator1 = geminiTranslateCN2EN.chat(aiMessageFormat.getMessage());
+//        String content = gemini.chat(id, translator1);
+        String content2 = gemini.chat(id, aiMessageFormat);
+//        AiMessageFormat translator2 = geminiTranslateEN2CN.chat(content);
+        return content2;
     }
 
     @Override
     public aiSearchFinalEntity aisearchNSFW(String id, AiMessageFormat aiMessageFormat) {
         return null;
     }
+
+
 }
