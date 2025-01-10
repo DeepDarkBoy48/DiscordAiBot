@@ -3,27 +3,27 @@ spring:
     name: discordbot2
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://45.76.199.153:3307/discordBot?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
+    url: jdbc:mysql://159.223.193.72:3306/discordBot?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
     username: root
     password: 123
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 100MB
-  data:
-    redis:
-      # 数据库
-      database: 0
-      # 主机
-      host: 45.76.199.153
-      # 端口
-      port: 6379
-      # 密码
-      password: 123
-      # 读超时
-      timeout: 5s
-      # 连接超时
-      connect-timeout: 5s
+#  data:
+#    redis:
+#      # 数据库
+#      database: 0
+#      # 主机
+#      host: 45.76.199.153
+#      # 端口
+#      port: 6379
+#      # 密码
+#      password: 123
+#      # 读超时
+#      timeout: 5s
+#      # 连接超时
+#      connect-timeout: 5s
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
