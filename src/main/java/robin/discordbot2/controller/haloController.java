@@ -1,10 +1,14 @@
 package robin.discordbot2.controller;
 
-import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import jakarta.annotation.Resource;
+import robin.discordbot2.pojo.entity.Result;
 import robin.discordbot2.pojo.entity.User;
 import robin.discordbot2.service.HaloService;
 
@@ -22,7 +26,13 @@ public class haloController {
     }
 
     @GetMapping("/test")
-    public String test(){
-        return "Hello World";
+    public Result test(){
+        return Result.success();
+    }
+
+    @PostMapping("/articles")
+    public String article(@RequestParam String article){
+        System.out.println(article);
+        return "success";
     }
 }

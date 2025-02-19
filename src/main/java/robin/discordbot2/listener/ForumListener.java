@@ -34,7 +34,7 @@ public class ForumListener extends ListenerAdapter {
         if (event.isFromThread()
                 && event.getChannel().asThreadChannel().getParentChannel().getName().equals("ai聊天")) {
             // 忽略机器人消息
-            // 如果是bot的消息1263657178540019763，就不回复
+            // 如果是bot的消息1263657178540019763(deepdarkbot)，就不回复
             if (event.getMessage().getAuthor().getId().equals("1263657178540019763")) {
                 // System.out.println(event.getMessage().getAuthor().getId());
                 return;
@@ -173,7 +173,6 @@ public class ForumListener extends ListenerAdapter {
                 aiSearchFinalEntity aisearchResult = langchain4jservice.aisearch(id, aiMessageFormat);
                 // 创建带按钮的搜索结果
                 createSearchButtonLoop(event, aisearchResult);
-                // 使用 hook 发送回复
                 break;
             case "option2":
                 // 重新搜索
