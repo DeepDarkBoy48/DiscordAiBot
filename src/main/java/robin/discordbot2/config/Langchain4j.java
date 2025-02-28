@@ -19,7 +19,7 @@ import robin.discordbot2.pojo.entity.aiEntity.aiSearchOutputEntity;
 
 @Configuration
 public class Langchain4j {
-    private final Dotenv dotenv = Dotenv.load();
+    private static final Dotenv dotenv = Dotenv.load();
 
     public String getOpenaiToken() {
         return dotenv.get("openaiToken");
@@ -29,8 +29,8 @@ public class Langchain4j {
         return dotenv.get("discordToken");
     }
 
-    public String getGoogleToken() {
-        return dotenv.get("geminiToken");
+    public static String getGoogleToken() {
+        return dotenv.get("GEMINI2");
     }
 
     /**
@@ -39,7 +39,7 @@ public class Langchain4j {
      * @return
      */
     @Bean
-    public ChatMemoryProvider chatMemoryProvider() {
+    public static ChatMemoryProvider chatMemoryProvider() {
         return memoryId -> MessageWindowChatMemory.builder()
                 .id(memoryId)
                 .maxMessages(30)
@@ -75,7 +75,7 @@ public class Langchain4j {
     }
 
     /**
-     * gemini-1.5-flash模型
+     * gemini-2.0-flash模型
      *
      * @return
      */
@@ -83,12 +83,12 @@ public class Langchain4j {
     public ChatLanguageModel chatLanguageModelGeminiFlash() {
         return GoogleAiGeminiChatModel.builder()
                 .apiKey(getGoogleToken())
-                .modelName("gemini-1.5-flash")
+                .modelName("gemini-2.0-flash")
                 .build();
     }
 
     /**
-     * gemini-1.5-pro
+     * gemini-2.0-pro
      *
      * @return
      */
@@ -96,7 +96,7 @@ public class Langchain4j {
     public ChatLanguageModel chatLanguageModelGeminiPro() {
         return GoogleAiGeminiChatModel.builder()
                 .apiKey(getGoogleToken())
-                .modelName("gemini-1.5-pro")
+                .modelName("gemini-2.0-pro-exp-02-05")
                 .build();
     }
 
@@ -115,28 +115,13 @@ public class Langchain4j {
     }
 
     /**
-     * gemini-exp-1206
-     *
+     * Gemini 2.0 Flash-Lite
      * @return
      */
-    @Bean
-    public ChatLanguageModel chatLanguageModelGeminiExp1206() {
+    static public ChatLanguageModel chatLanguageModelGeminiFlashLite() {
         return GoogleAiGeminiChatModel.builder()
                 .apiKey(getGoogleToken())
-                .modelName("gemini-exp-1206")
-                .build();
-    }
-
-    /**
-     * gemini-2.0-exp-flash
-     *
-     * @return
-     */
-    @Bean
-    public ChatLanguageModel chatLanguageModelGeminiflash2() {
-        return GoogleAiGeminiChatModel.builder()
-                .apiKey(getGoogleToken())
-                .modelName("gemini-2.0-flash-exp")
+                .modelName("gemini-2.0-flash-lite")
                 .build();
     }
 
@@ -153,7 +138,10 @@ public class Langchain4j {
                 .build();
     }
 
-    //deepDarkAiHTMLFigure
+    /**
+     * Aiservice - - AiAssistantFigure
+     */
+
     public interface AiAssistantFigure {
         @SystemMessage("Output the answer according to the information. " +
                 "If the information is in Chinese, it needs to be translated into English and then the answer needs to be output. " +
@@ -162,7 +150,6 @@ public class Langchain4j {
                 " For example, if the user enters ‘ai rankings’, a detailed table should be given, including a comparison of various parameters.")
         String chat(@MemoryId Object userId, @UserMessage("AiMessageFormat") AiMessageFormat aiMessageFormat);
     }
-
     @Bean
     public AiAssistantFigure deepDarkAiHTMLFigure() {
         return AiServices.builder(AiAssistantFigure.class)
@@ -170,13 +157,13 @@ public class Langchain4j {
                 .build();
     }
 
-    //AiAssistantText
-
+    /**
+     * Aiservice - - AiAssistantText
+     */
     public interface AiAssistantText {
         @SystemMessage("根据message信息输出答案，并把输出的答案用markdown包装，如大标题，代码块，加粗等")
         String chat(@MemoryId Object userId, @UserMessage("AiMessageFormat") AiMessageFormat aiMessageFormat);
     }
-
     @Bean
     public AiAssistantText deepDarkAi() {
         return AiServices.builder(AiAssistantText.class)
@@ -184,7 +171,10 @@ public class Langchain4j {
                 .build();
     }
 
-    //chatgpt-4o-mini
+    /**
+     * Aiservice - - AiAssistantThreadText
+     */
+    //
     public interface AiAssistantThreadText {
         @SystemMessage("根据message信息输出答案，并把输出的答案用markdown包装，如大标题，代码块，加粗等")
         String chat(@MemoryId Object userId, @UserMessage("AiMessageFormat") AiMessageFormat aiMessageFormat);
@@ -198,7 +188,9 @@ public class Langchain4j {
                 .build();
     }
 
-    //embed
+    /**
+     *  AiService - - embed
+     */
     public interface embed {
         @SystemMessage("根据用户提供的url输出嵌入代码。以下是输出实例：" +
                 "1.YouTube用嵌入，用户户输入https://www.youtube.com/embed/w-TT5M6Ax_k?si=NryDdn03edu90Yq7" +
@@ -221,7 +213,6 @@ public class Langchain4j {
                 "最后输出代码块给用户,用markdonw格式包装")
         String chat(@MemoryId Object userId, @UserMessage("AiMessageFormat") AiMessageFormat aiMessageFormat);
     }
-
     @Bean
     public embed embed(ChatMemoryProvider chatMemoryProvider) {
         return AiServices.builder(embed.class)
@@ -231,8 +222,7 @@ public class Langchain4j {
     }
 
     /**
-     * ai search tavily
-     *
+     * AiService - - aiSearchTavily
      * @return
      */
 
@@ -246,7 +236,6 @@ public class Langchain4j {
                 "此外，根据 resultInfo 提供的信息生成 3 个相关追问问题,字数控制在20个字符以内，并将这些问题填入 aiSearchOutputEntity 的 List<String> buttonInfo 中。\n")
         aiSearchOutputEntity chat(@MemoryId Object userId, @UserMessage String resultInfo);
     }
-
     @Bean
     public aiSearchTavily aiSearchTavily() {
         return AiServices.builder(aiSearchTavily.class)
@@ -255,7 +244,7 @@ public class Langchain4j {
     }
 
     /**
-     * gemini general service
+     * AiService - - AiAssistantGemini
      */
     public interface AiAssistantGemini {
         @SystemMessage("""
@@ -318,7 +307,7 @@ public class Langchain4j {
     @Bean
     public AiAssistantGemini aiAssistantGemini() {
         return AiServices.builder(AiAssistantGemini.class)
-                .chatLanguageModel(chatLanguageModelGeminiExp1206())
+                .chatLanguageModel(chatLanguageModelGeminiFlash())
                 .build();
     }
 
@@ -364,6 +353,20 @@ public class Langchain4j {
     public AiAssistantGeminiFlashThinking aiAssistantGeminiFlashThinking(){
         return AiServices.builder(AiAssistantGeminiFlashThinking.class)
                 .chatLanguageModel(chatLanguageModelGeminiFlashThinking())
+                .chatMemoryProvider(chatMemoryProvider())
+                .build();
+    }
+
+    /**
+     * Gemini flash lite
+     */
+    public interface AiAssistantGeminiFlashLite {
+        @SystemMessage("你只能发送表情")
+        AiMessageFormat chat(@UserMessage String message);
+    }
+    static public AiAssistantGeminiFlashLite aiAssistantGeminiFlashLite() {
+        return AiServices.builder(AiAssistantGeminiFlashLite.class)
+                .chatLanguageModel(chatLanguageModelGeminiFlashLite())
                 .chatMemoryProvider(chatMemoryProvider())
                 .build();
     }

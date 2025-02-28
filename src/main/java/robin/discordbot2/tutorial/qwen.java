@@ -1,9 +1,10 @@
 package robin.discordbot2.tutorial;
 
-import dev.langchain4j.community.model.dashscope.QwenChatModel;
-import dev.langchain4j.community.model.dashscope.QwenEmbeddingModel;
+
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.dashscope.QwenChatModel;
+import dev.langchain4j.model.dashscope.QwenEmbeddingModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.output.Response;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -11,20 +12,16 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class qwen {
     public static Dotenv dotenv = Dotenv.load();
 
-    public static String getGeminiToken() {
+    public static String getQwenToken() {
         return dotenv.get("qwen");
     }
-
-
     public static void main(String[] args) {
         ChatLanguageModel qwenChatModel = QwenChatModel.builder()
-                .apiKey(getGeminiToken())
+                .apiKey(getQwenToken())
                 .modelName("deepseek-r1")
                 .build();
-
-
         EmbeddingModel embeddingModel  = QwenEmbeddingModel.builder()
-                .apiKey(getGeminiToken())
+                .apiKey(getQwenToken())
                 .modelName("text-embedding-v3")
                 .build();
         Response<Embedding> embed = embeddingModel.embed("你好，你叫什么名字？");

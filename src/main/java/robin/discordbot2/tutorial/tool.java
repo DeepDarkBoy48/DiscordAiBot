@@ -18,8 +18,7 @@ public class tool {
 
         class WeatherForecastService {
             @Tool("Get the weather forecast for a location")
-            WeatherForecast getForecast(
-                    @P("Location to get the forecast for") String location) {
+            WeatherForecast getForecast(@P("Location to get the forecast for") String location) {
                 if (location.equals("Paris")) {
                     return new WeatherForecast("Paris", "sunny", 20);
                 } else if (location.equals("London")) {

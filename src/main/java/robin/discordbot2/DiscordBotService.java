@@ -38,8 +38,8 @@ public class DiscordBotService {
 
 
             // 配置代理
-            OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder()
-                    .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7897)));
+//            OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder()
+//                    .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 7897)));
 
             // 初始化 ShardManager
             DefaultShardManagerBuilder builder = DefaultShardManagerBuilder.createDefault(discordToken)
@@ -49,8 +49,8 @@ public class DiscordBotService {
                     .setChunkingFilter(ChunkingFilter.ALL)
                     .enableCache(CacheFlag.ONLINE_STATUS,CacheFlag.FORUM_TAGS,CacheFlag.ROLE_TAGS)
                     .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_PRESENCES,GatewayIntent.GUILD_MESSAGE_REACTIONS)
-                    .addEventListeners(new ForumListener(), new CommandManager(),new ReactionListener(),new ChannelListener(),new PingListener())
-                    .setHttpClientBuilder(httpClientBuilder); // 设置 HttpClient 配置
+                    .addEventListeners(new ForumListener(), new CommandManager(),new ReactionListener(),new ChannelListener(),new PingListener());
+//                    .setHttpClientBuilder(httpClientBuilder); // 设置 HttpClient 配置
 
             // 启动 ShardManager
             this.shardManager = builder.build();

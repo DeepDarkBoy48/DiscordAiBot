@@ -93,6 +93,8 @@
             <version>0.1.0</version>
         </dependency>
 
+
+
         <!--    langchain4j OpenAi-->
         <dependency>
             <groupId>dev.langchain4j</groupId>
@@ -127,14 +129,21 @@
             <version>0.36.2</version>
         </dependency>
 
-
-<!--        qwen-->
-        <!-- https://mvnrepository.com/artifact/dev.langchain4j/langchain4j-community-dashscope-spring-boot-starter -->
+        <!-- https://mvnrepository.com/artifact/dev.langchain4j/langchain4j-dashscope-spring-boot-starter -->
         <dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-community-dashscope-spring-boot-starter</artifactId>
-            <version>1.0.0-beta1</version>
+            <artifactId>langchain4j-dashscope-spring-boot-starter</artifactId>
+            <version>0.36.0</version>
         </dependency>
+
+
+<!--&lt;!&ndash;        qwen&ndash;&gt;-->
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/dev.langchain4j/langchain4j-community-dashscope-spring-boot-starter &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>dev.langchain4j</groupId>-->
+<!--            <artifactId>langchain4j-community-dashscope-spring-boot-starter</artifactId>-->
+<!--            <version>1.0.0-beta1</version>-->
+<!--        </dependency>-->
 
 
         <!--        langchain4j-redis-->
