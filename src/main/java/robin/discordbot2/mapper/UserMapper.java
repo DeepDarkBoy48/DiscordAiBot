@@ -6,6 +6,6 @@ import robin.discordbot2.pojo.entity.User;
 
 @Mapper
 public interface UserMapper {
-    @Select("select * from user where id = #{id};")
+    @Select("select * from users where id = #{id};")
     User getUserById(Integer id);
 }
