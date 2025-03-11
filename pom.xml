@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>robin</groupId>
-    <artifactId>discordbot2</artifactId>
+    <artifactId>discordbot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>discordbot2</name>
     <description>discordbot2</description>
@@ -42,9 +42,9 @@
 
         <!--        mybatis-->
         <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>3.0.3</version>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+            <version>3.5.10.1</version>
         </dependency>
 
         <!--        mysql-->

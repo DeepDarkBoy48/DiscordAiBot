@@ -12,7 +12,25 @@
 
 @PostConstruct 方法中执行代码：把 bot 的初始化代码放到 @PostConstruct 注解的方法中，以确保在 Spring Boot 启动后执行
 
+# modellist
+gemini flash thinking exp 01-21
+```aiexclude
+gemini-2.0-flash-thinking-exp-01-21
+```
+# gemini-2.0-flash-lite
+```aiexclude
+gemini-2.0-flash-lite
+```
 
+# gemini-2.0-pro-exp-02-05
+```aiexclude
+gemini-2.0-pro-exp-02-05
+```
+
+#  gemini-2.0-flash
+```
+gemini-2.0-flash
+```
 
 
 # html2img

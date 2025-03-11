@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="robin.discordbot.mapper.AiMapper">
+
+    <update id="updateAI">
+        UPDATE ai_prompts
+        <set>
+            <if test="aiPrompt.prompt != null">prompt = #{aiPrompt.prompt},</if>
+            <if test="aiPrompt.creator != null">creator = #{aiPrompt.creator},</if>
+            <if test="aiPrompt.creationTime != null">creation_time = #{aiPrompt.creationTime},</if>
+            <if test="aiPrompt.modelName != null">model_name = #{aiPrompt.modelName},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>

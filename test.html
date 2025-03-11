@@ -6,59 +6,26 @@
     <title>Document</title>
 </head>
 <body>
-    <svg width="480" height="760" viewBox="0 0 480 760" xmlns="http://www.w3.org/2000/svg">
-        <style>
-          @font-face {
-            font-family: "KingHwa_OldSong";
-            src: url("path/to/KingHwa_OldSong.ttf"); /* 替换为你的字体文件路径 */
-          }
-          .画布 {
-            background-color: white;
-            font-family: "KingHwa_OldSong", serif;
-            font-size: 24px;
-            fill: black;
-          }
-          .外边框线 {
-            stroke: black;
-            stroke-width: 1;
-            fill: none;
-          }
-          .标题 {
-            font-size: 36px;
-            font-weight: bold;
-            text-anchor: middle;
-          }
-          .分隔线 {
-            stroke: black;
-            stroke-width: 1;
-          }
-          .背景色block {
-            background-color: #f0f0f0;
-            padding: 10px;
-          }
-          .排版 {
-            text-align: left;
-            line-height: 1.5;
-          }
-          .右对齐 {
-            text-anchor: end;
-            font-size: 16px;
-          }
-        </style>
-        <rect width="420" height="700" x="30" y="30" class="外边框线 画布"/>
-        <text x="240" y="80" class="标题">质疑之锥</text>
-        <line x1="30" y1="120" x2="450" y2="120" class="分隔线"/>
-        <g transform="translate(30, 150)">
-          <rect width="420" height="auto" class="背景色block"/>
-          <text x="10" y="20" class="排版">小猴子</text>
-        </g>
-        <g transform="translate(30, 250)">
-          <text x="10" y="20" class="排版">你说“小猴子”。</text>
-          <text x="10" y="50" class="排版">这个说法成立吗？</text>
-          <text x="10" y="80" class="排版">你的意思是？</text>
-        </g>
-        <line x1="30" y1="400" x2="450" y2="400" class="分隔线"/>
-        <text x="450" y="730" class="右对齐">Prompt by 李继刚</text>
-      </svg>
+<script>
+    window.difyChatbotConfig = {
+        token: 'eRHFjB7HU5itzWTE',
+        baseUrl: 'dify.alistrobin.uk'
+    }
+</script>
+<script
+        src="dify.alistrobin.uk/embed.min.js"
+        id="eRHFjB7HU5itzWTE"
+        defer>
+</script>
+<style>
+    #dify-chatbot-bubble-button {
+        background-color: #1C64F2 !important;
+    }
+
+    #dify-chatbot-bubble-window {
+        width: 24rem !important;
+        height: 40rem !important;
+    }
+</style>
 </body>
 </html>
