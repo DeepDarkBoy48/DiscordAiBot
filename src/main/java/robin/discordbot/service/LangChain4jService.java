@@ -1,5 +1,6 @@
 package robin.discordbot.service;
 
+import dev.langchain4j.model.chat.ChatLanguageModel;
 import robin.discordbot.pojo.entity.aiEntity.AiMessageFormat;
 import robin.discordbot.pojo.entity.aiEntity.aiSearchFinalEntity;
 
@@ -22,5 +23,5 @@ public interface LangChain4jService {
 
     aiSearchFinalEntity aisearchNSFW(String id, AiMessageFormat aiMessageFormat);
 
-
+    String chat(String message);
 }

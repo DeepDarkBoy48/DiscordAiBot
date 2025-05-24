@@ -4,6 +4,7 @@ import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.dashscope.QwenChatModel;
 import io.github.cdimascio.dotenv.Dotenv;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.annotation.Resource;
@@ -12,18 +13,24 @@ import robin.discordbot.pojo.entity.Result;
 import robin.discordbot.pojo.entity.User;
 import robin.discordbot.pojo.entity.aiEntity.AiMessageFormat;
 import robin.discordbot.service.ApiService;
+import robin.discordbot.service.LangChain4jService;
 import robin.discordbot.utils.entityTest;
 
 @RestController
 @RequestMapping("/api")
 public class ApiController {
 
-    /**
-     * Apifox Helper Dify controller
-     */
-    @Resource
-    private ApiService haloService;
+    private final ApiService haloService;
+    private final LangChain4jService langChain4jService;
+
     public static Dotenv dotenv = Dotenv.load();
+
+    @Autowired
+    public ApiController(ApiService haloService, LangChain4jService langChain4jService) {
+        this.haloService = haloService;
+        this.langChain4jService = langChain4jService;
+    }
+
     public static String getQwenToken() {
         return dotenv.get("qwen");
     }
@@ -53,5 +60,10 @@ public class ApiController {
     public String article(@RequestParam String article){
         System.out.println(article);
         return "success";
+    }
+
+    @PostMapping("/chat")
+    public String chatWithBot(@RequestBody String message) {
+        return langChain4jService.chat(message);
     }
 }

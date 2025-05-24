@@ -136,6 +136,13 @@
             <version>0.36.0</version>
         </dependency>
 
+        <!-- langchain4j-ollama-spring-boot-starter -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-ollama-spring-boot-starter</artifactId>
+            <version>0.30.0</version>
+        </dependency>
+
 
 <!--&lt;!&ndash;        qwen&ndash;&gt;-->
 <!--        &lt;!&ndash; https://mvnrepository.com/artifact/dev.langchain4j/langchain4j-community-dashscope-spring-boot-starter &ndash;&gt;-->

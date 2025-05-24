@@ -32,6 +32,15 @@ openai:
   api:
     url: https://api.openai.com/v1/chat/completions
 
+langchain4j:
+  ollama:
+    chat-model:
+      base-url: http://localhost:11434  # Replace with your Ollama base URL if different
+      model-name: mistral  # Replace with your desired model name
+      temperature: 0.7
+      timeout: 60s
+      max-retries: 3
+
 
 
 

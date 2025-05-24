@@ -6,6 +6,7 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import dev.langchain4j.data.image.Image;
+import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.openai.OpenAiImageModel;
 import dev.langchain4j.model.output.Response;
@@ -48,6 +49,9 @@ public class LangChain4jServiceImpl implements LangChain4jService {
     private Langchain4j.AiAssistantGeminiTranslateCN2EN geminiTranslateCN2EN;
 //    @Resource
 //    private Langchain4j.AiAssistantPlayground aiPlayground;
+
+    @Autowired
+    private ChatLanguageModel chatLanguageModel;
 
     private final Dotenv dotenv = Dotenv.load();
 
@@ -226,5 +230,8 @@ public class LangChain4jServiceImpl implements LangChain4jService {
         return null;
     }
 
-
+    @Override
+    public String chat(String message) {
+        return chatLanguageModel.generate(message);
+    }
 }
