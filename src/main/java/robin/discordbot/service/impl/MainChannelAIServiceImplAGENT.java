@@ -1,5 +1,6 @@
 package robin.discordbot.service.impl;
 
+import dev.langchain4j.model.chat.response.ChatResponse;
 import org.springframework.stereotype.Service;
 
 import dev.langchain4j.data.message.AiMessage;
@@ -41,15 +42,18 @@ public class MainChannelAIServiceImpl implements MainChannelAIService {
         chatMemory.add(systemMessage);
         UserMessage userMessage = new UserMessage(message); //  创建 UserMessage
         chatMemory.add(userMessage); // 添加 UserMessage 到 chatMemory
-        Response<AiMessage> response = null;
+
+        List<ChatMessage> chatMessages = chatMemory.messages();
+
+        ChatResponse response = null;
         try {
-            response = model.generate(chatMemory.messages()); // chatMemory.messages() 现在包含 SystemMessage 和 UserMessage
+            response = model.chat(chatMessages); // chatMemory.messages() 现在包含 SystemMessage 和 UserMessage
         } catch (Exception e) {
             System.out.println("shit");
         } finally {
             System.out.println("success");
         }
-        AiMessage aiMessage = response.content();
+        AiMessage aiMessage = response.aiMessage();
         chatMemory.add(aiMessage); // 将 AI 的回复消息添加到 chatMemory
 
         List<ChatMessage> messages = chatMemory.messages();
