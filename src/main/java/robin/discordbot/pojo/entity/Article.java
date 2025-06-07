@@ -1,14 +1,15 @@
-package com.itheima.pojo;
+package robin.discordbot.pojo.entity;
 
 
-import com.itheima.anno.State;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
+import robin.discordbot.anno.State;
 
 import java.time.LocalDateTime;
+
 @Data
 public class Article {
     private Integer id;//主键ID

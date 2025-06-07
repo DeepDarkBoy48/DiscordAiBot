@@ -1,10 +1,13 @@
 package robin.discordbot.service;
 
-import robin.discordbot.apiPojo.dto.translateResult;
-import robin.discordbot.pojo.entity.User;
+import org.springframework.web.multipart.MultipartFile;
+import robin.discordbot.pojo.vo.LLMResult;
 
-public interface ApiService {
-    User getUserById(Integer id);
+public interface ShortCutService {
 
-    translateResult getTranslate(String text);
+    LLMResult Unhinged(String text);
+
+    void setSystemMessage(String text);
+
+    String audioAnalyzer(MultipartFile file, String prompt);
 }

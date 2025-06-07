@@ -17,7 +17,7 @@ import robin.discordbot.service.MainChannelAIService;
 import java.util.List;
 
 @Service
-public class MainChannelAIServiceImplA implements MainChannelAIService {
+public class MainChannelAIServiceImplTEST implements MainChannelAIService {
 
     private Dotenv dotenv = Dotenv.load();
 
@@ -29,7 +29,7 @@ public class MainChannelAIServiceImplA implements MainChannelAIService {
     }
 
     @Override
-    public String aiPlayGround(MessageReceivedEvent event) {
+    public String aiPlayGroundAGENT(MessageReceivedEvent event) {
         String message = event.getMessage().getContentRaw();
 
         ChatLanguageModel model = GoogleAiGeminiChatModel.builder()
@@ -55,12 +55,12 @@ public class MainChannelAIServiceImplA implements MainChannelAIService {
         chatMemory.add(aiMessage); // 将 AI 的回复消息添加到 chatMemory
 
         List<ChatMessage> messages = chatMemory.messages();
-        String text = messages.get(1).text();
+        String text = messages.get(1).toString();
         return aiMessage.text();
     }
 
     @Override
-    public String aiPlayGroundTest(MessageReceivedEvent event) {
+    public String aiPlayGroundMCP(MessageReceivedEvent event) {
         return null;
     }
 }

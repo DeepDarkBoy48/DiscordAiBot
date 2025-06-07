@@ -1,4 +1,4 @@
-package robin.discordbot.pojo;
+package robin.discordbot.pojo.entity;
 
 
 

@@ -1,4 +1,4 @@
-package com.itheima.bigeventadmin.utils;
+package robin.discordbot.utils;
 
 
 import java.security.MessageDigest;

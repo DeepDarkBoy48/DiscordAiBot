@@ -58,9 +58,6 @@ public class ForumListener extends ListenerAdapter {
                 if (forumTag.getName().equals("grok")) {
                     result = grok(event);
                 }
-                if (forumTag.getName().equals("gemini")) {
-                    result = gemini(event);
-                }
             }
             discordWordsLimit.splitParagraph(result, event);
         }
@@ -215,18 +212,5 @@ public class ForumListener extends ListenerAdapter {
         return result;
     }
 
-    private String gemini(MessageReceivedEvent event) {
-        String message = event.getMessage().getContentRaw();
-        String id = event.getChannel().asThreadChannel().getParentChannel().getId();
-        AiMessageFormat aiMessageFormat = new AiMessageFormat();
-        aiMessageFormat.setMessage(message);
-        String result = "";
-        try {
-            LangChain4jService langchain4jservice = RegularConfig.getLangchain4jservice();
-            result = langchain4jservice.gemini(id, aiMessageFormat);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
+
 }

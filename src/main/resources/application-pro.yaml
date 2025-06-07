@@ -1,12 +1,4 @@
-spring:
-  application:
-    name: discordbot2
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.82.1.231:3306/discordBot?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
-    #    url: jdbc:mysql://localhost/discordBot?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
-    username: root
-    password: 123
+1·11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111·····111111
   servlet:
     multipart:
       max-file-size: 50MB

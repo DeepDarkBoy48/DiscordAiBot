@@ -1,8 +1,8 @@
-package com.itheima.validation;
+package robin.discordbot.validation;
 
-import com.itheima.anno.State;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import robin.discordbot.anno.State;
 
 public class StateValidation implements ConstraintValidator<State,String> {
     /**
@@ -23,4 +23,6 @@ public class StateValidation implements ConstraintValidator<State,String> {
         }
         return false;
     }
+
+
 }

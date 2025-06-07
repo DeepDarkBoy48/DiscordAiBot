@@ -1,11 +1,12 @@
-package com.itheima.controller;
+package robin.discordbot.controller;
 
-import com.itheima.pojo.Category;
-import com.itheima.pojo.Result;
-import com.itheima.service.CategoryService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import robin.discordbot.pojo.entity.Category;
+import robin.discordbot.pojo.entity.Result;
+import robin.discordbot.service.CategoryService;
 
 import java.util.List;
 

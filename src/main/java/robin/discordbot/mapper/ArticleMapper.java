@@ -1,8 +1,9 @@
-package com.itheima.mapper;
+package robin.discordbot.mapper;
 
-import com.itheima.pojo.Article;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import robin.discordbot.pojo.entity.Article;
 
 import java.util.List;
 

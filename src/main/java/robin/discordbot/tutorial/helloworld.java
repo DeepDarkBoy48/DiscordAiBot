@@ -20,8 +20,6 @@ public class helloworld {
                 .modelName(model)
                 .build();
 
-        String answer =  modle.generate("how to use langchain4j");
-        String translator = modle.generate("translate {{"+answer+"}} to zh");
-        System.out.println(translator);
+        modle.chat("你写一个故事");
     }
 }

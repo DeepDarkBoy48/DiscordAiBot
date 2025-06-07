@@ -1,7 +1,8 @@
-package com.itheima.service;
+package robin.discordbot.service;
 
-import com.itheima.pojo.Article;
-import com.itheima.pojo.PageBean;
+
+import robin.discordbot.pojo.entity.Article;
+import robin.discordbot.pojo.entity.PageBean;
 
 public interface ArticleService {
     //新增文章

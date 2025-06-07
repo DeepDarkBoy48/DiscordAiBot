@@ -1,4 +1,4 @@
-package com.itheima;
+package robin.discordbot;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

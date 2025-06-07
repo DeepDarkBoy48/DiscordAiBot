@@ -1,4 +1,4 @@
-package com.itheima.utils;
+package robin.discordbot.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

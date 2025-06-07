@@ -2,7 +2,10 @@ package robin.discordbot.tutorial;
 
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.model.StreamingResponseHandler;
+import dev.langchain4j.model.chat.response.ChatResponse;
+import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 import dev.langchain4j.model.googleai.GoogleAiGeminiStreamingChatModel;
+import dev.langchain4j.model.output.Response;
 import io.github.cdimascio.dotenv.Dotenv;
 import robin.discordbot.record.llmModel;
 
@@ -21,9 +24,11 @@ public class Streaming {
                 .modelName(llmModel.GEMINI_FLASH.getModle())
                 .build();
 
-        model.generate("你写一个故事", new StreamingResponseHandler<AiMessage>() {
+        model.chat("你写一个故事", new StreamingChatResponseHandler() {
+
+
             @Override
-            public void onNext(String token) {
+            public void onPartialResponse(String token) {
                 System.out.println(token);
                 try {
                     TimeUnit.SECONDS.sleep(3);
@@ -33,9 +38,19 @@ public class Streaming {
             }
 
             @Override
-            public void onError(Throwable error) {
-                System.out.println(error);
+            public void onCompleteResponse(ChatResponse chatResponse) {
+                System.out.println(chatResponse);
+            }
+
+
+            @Override
+            public void onError(Throwable throwable) {
+                System.out.println(throwable);
             }
         });
+
+
+
+
     }
 }

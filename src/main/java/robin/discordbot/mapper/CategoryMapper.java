@@ -1,8 +1,7 @@
-package com.itheima.mapper;
+package robin.discordbot.mapper;
 
-import com.itheima.pojo.Category;
 import org.apache.ibatis.annotations.*;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import robin.discordbot.pojo.entity.Category;
 
 import java.util.List;
 

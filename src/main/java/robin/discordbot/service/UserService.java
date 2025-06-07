@@ -1,6 +1,7 @@
-package com.itheima.service;
+package robin.discordbot.service;
 
-import com.itheima.pojo.User;
+
+import robin.discordbot.pojo.entity.User;
 
 public interface UserService {
     //根据用户名查询用户

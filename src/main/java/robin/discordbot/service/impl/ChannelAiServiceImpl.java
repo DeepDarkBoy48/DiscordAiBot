@@ -173,21 +173,4 @@ public class ChannelAiServiceImpl implements ChannelAIService {
         return chat;
     }
 
-    /**
-     * MC AI
-     */
-    @Autowired
-    private Langchain4j.AiAssistantGemini gemini;
-    @Override
-    public String aiMc(MessageReceivedEvent event) {
-
-        String id = event.getChannel().getId();
-        String message = event.getMessage().getContentRaw();
-        String globalName = event.getAuthor().getGlobalName();
-        AiMessageFormat aiMessageFormat = new AiMessageFormat();
-        aiMessageFormat.setMessage(message);
-        aiMessageFormat.setUsername(globalName);
-        String chat = gemini.chat(id, aiMessageFormat);
-        return chat;
-    }
 }

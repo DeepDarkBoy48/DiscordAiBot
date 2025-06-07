@@ -5,7 +5,9 @@ import cn.hutool.http.HttpUtil;
 import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.AudioContent;
+import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.response.ChatResponse;
 import dev.langchain4j.model.googleai.GoogleAiGeminiChatModel;
 import dev.langchain4j.model.output.Response;
 import dev.langchain4j.service.AiServices;
@@ -38,9 +40,9 @@ public class modality {
     public static void main(String[] args) throws NoSuchMethodException {
         ChatLanguageModel model = GoogleAiGeminiChatModel.builder()
                 .apiKey(getGeminiToken()) // 需要替换为你的 Gemini API 密钥 [2]
-                .modelName("gemini-2.0-flash") //  模型名称 [2]
+                .modelName("gemini-2.5-flash-preview-05-20") //  模型名称 [2]
                 .build();
-        ModalityTest  modalityTest = AiServices.builder(ModalityTest.class)
+        ModalityTest modalityTest = AiServices.builder(ModalityTest.class)
                 .chatLanguageModel(model)
                 .build();
 
@@ -61,11 +63,11 @@ public class modality {
             
             // 使用Base64字符串创建AudioContent (指定MIME类型为mp3)
             AudioContent audioContent = AudioContent.from(base64Audio, "audio/mp3");
+            ChatMessage chatMessage = dev.langchain4j.data.message.UserMessage.from(audioContent);
+            ChatMessage chatMessage2 = dev.langchain4j.data.message.UserMessage.from("请总结以上录音");
 
-            // 调用AI服务
-            Response<AiMessage> generate = model.generate(dev.langchain4j.data.message.UserMessage.from(audioContent));
-            String text = generate.content().text();
-
+            ChatResponse chat1 = model.chat(chatMessage,  chatMessage2);
+            String text = chat1.aiMessage().text();
 
             System.out.println(text);
         } catch (Exception e) {

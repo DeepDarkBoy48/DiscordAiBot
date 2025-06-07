@@ -1,14 +1,15 @@
-package com.itheima.service.impl;
+package robin.discordbot.service.impl;
+
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.itheima.mapper.ArticleMapper;
-import com.itheima.pojo.Article;
-import com.itheima.pojo.PageBean;
-import com.itheima.service.ArticleService;
-import com.itheima.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import robin.discordbot.mapper.ArticleMapper;
+import robin.discordbot.pojo.entity.Article;
+import robin.discordbot.pojo.entity.PageBean;
+import robin.discordbot.service.ArticleService;
+import robin.discordbot.utils.ThreadLocalUtil;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +33,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         articleMapper.add(article);
     }
+
 
     @Override
     public PageBean<Article> list(Integer pageNum, Integer pageSize, Integer categoryId, String state) {

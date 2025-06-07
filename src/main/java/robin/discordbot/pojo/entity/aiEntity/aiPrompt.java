@@ -1,4 +1,4 @@
-package robin.discordbot.pojo.entity;
+package robin.discordbot.pojo.entity.aiEntity;
 
 import lombok.Data;
 

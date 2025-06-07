@@ -4,7 +4,7 @@ import robin.discordbot.pojo.entity.aiEntity.AiMessageFormat;
 import robin.discordbot.pojo.entity.aiEntity.aiSearchFinalEntity;
 
 public interface LangChain4jService {
-    byte[] deepDarkAiHTMLFigure(String id, AiMessageFormat aiMessageFormat);
+
 
     String deepdarkaiText(String id, AiMessageFormat aiMessageFormat);
 
@@ -18,7 +18,7 @@ public interface LangChain4jService {
 
     String grok(String message);
 
-    String gemini(String id, AiMessageFormat aiMessageFormat);
+
 
     aiSearchFinalEntity aisearchNSFW(String id, AiMessageFormat aiMessageFormat);
 

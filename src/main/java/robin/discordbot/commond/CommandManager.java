@@ -61,21 +61,6 @@ public class CommandManager extends ListenerAdapter {
             // 通过 sendFiles() 上传文件
             event.getHook().sendMessage(deepDarkResult).queue();
 
-        } else if (event.getName().equals("ai文字聊天html转图片")) {
-            event.deferReply().setEphemeral(false).queue();
-            OptionMapping option = event.getOption("输入提示词");
-            String message = option.getAsString();
-
-            //ai
-            AiMessageFormat aiMessageFormat = new AiMessageFormat();
-            aiMessageFormat.setMessage(message);
-            LangChain4jService langchain4jservice = RegularConfig.getLangchain4jservice();
-            byte[] deepDarkResult = langchain4jservice.deepDarkAiHTMLFigure(id, aiMessageFormat);
-            InputStream inputStream = new ByteArrayInputStream(deepDarkResult);
-            String fileName = "ai_response.png";
-
-            // 通过 sendFiles() 上传文件
-            event.getHook().sendFiles(FileUpload.fromData(inputStream, fileName)).queue();
         } else if (event.getName().equals("ai生成图片") && event.getMember().getId() == "1121767044715651122") {
             System.out.println(event.getMember().getId());
             event.deferReply().setEphemeral(false).queue();

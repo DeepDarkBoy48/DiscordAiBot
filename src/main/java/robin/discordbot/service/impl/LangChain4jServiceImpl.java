@@ -9,7 +9,6 @@ import dev.langchain4j.data.image.Image;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.openai.OpenAiImageModel;
 import dev.langchain4j.model.output.Response;
-import gui.ava.html.image.generator.HtmlImageGenerator;
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +39,12 @@ public class LangChain4jServiceImpl implements LangChain4jService {
     private Langchain4j.embed embed;
     @Autowired
     private Langchain4j.aiSearchTavily aiSearchTavily;
-    @Autowired
-    private Langchain4j.AiAssistantGemini gemini;
-    @Resource
-    private Langchain4j.AiAssistantGeminiTranslateEN2CN geminiTranslateEN2CN;
-    @Resource
-    private Langchain4j.AiAssistantGeminiTranslateCN2EN geminiTranslateCN2EN;
+//    @Autowired
+//    private Langchain4j.AiAssistantGemini gemini;
+//    @Resource
+//    private Langchain4j.AiAssistantGeminiTranslateEN2CN geminiTranslateEN2CN;
+//    @Resource
+//    private Langchain4j.AiAssistantGeminiTranslateCN2EN geminiTranslateCN2EN;
 //    @Resource
 //    private Langchain4j.AiAssistantPlayground aiPlayground;
 
@@ -71,28 +70,28 @@ public class LangChain4jServiceImpl implements LangChain4jService {
             .modelName("DALL·E 2")
             .build();
 
-    @Override
-    public byte[] deepDarkAiHTMLFigure(String id, AiMessageFormat aiMessageFormat) {
-        String deepDarkResult = deepDarkAiHTMLFigure.chat(id, aiMessageFormat);
-        // html2picture.htmlTransferImage(deepDarkResult);
-        HtmlImageGenerator imageGenerator = new HtmlImageGenerator();
-        // 加载 HTML 内容
-        imageGenerator.setSize(new Dimension(800, 600));
-        imageGenerator.loadHtml(deepDarkResult);
-        // 保存图片到指定路径
-        // imageGenerator.saveAsImage("output.png");
-        // 生成 BufferedImage
-        BufferedImage bufferedImage = imageGenerator.getBufferedImage();
-        // 将 BufferedImage 转换为 byte[]
-        // 使用 ByteArrayOutputStream 将 BufferedImage 转换为 byte[]
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            ImageIO.write(bufferedImage, "png", baos); // 将图片写入字节流，格式为 PNG
-            return baos.toByteArray(); // 返回字节数组
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null; // 处理异常，返回 null
-        }
-    }
+//    @Override
+//    public byte[] deepDarkAiHTMLFigure(String id, AiMessageFormat aiMessageFormat) {
+//        String deepDarkResult = deepDarkAiHTMLFigure.chat(id, aiMessageFormat);
+//        // html2picture.htmlTransferImage(deepDarkResult);
+//        HtmlImageGenerator imageGenerator = new HtmlImageGenerator();
+//        // 加载 HTML 内容
+//        imageGenerator.setSize(new Dimension(800, 600));
+//        imageGenerator.loadHtml(deepDarkResult);
+//        // 保存图片到指定路径
+//        // imageGenerator.saveAsImage("output.png");
+//        // 生成 BufferedImage
+//        BufferedImage bufferedImage = imageGenerator.getBufferedImage();
+//        // 将 BufferedImage 转换为 byte[]
+//        // 使用 ByteArrayOutputStream 将 BufferedImage 转换为 byte[]
+//        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+//            ImageIO.write(bufferedImage, "png", baos); // 将图片写入字节流，格式为 PNG
+//            return baos.toByteArray(); // 返回字节数组
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null; // 处理异常，返回 null
+//        }
+//    }
 
     @Override
     public String deepdarkaiText(String id, AiMessageFormat aiMessageFormat) {
@@ -212,14 +211,7 @@ public class LangChain4jServiceImpl implements LangChain4jService {
         }
     }
 
-    @Override
-    public String gemini(String id, AiMessageFormat aiMessageFormat) {
-//        AiMessageFormat translator1 = geminiTranslateCN2EN.chat(aiMessageFormat.getMessage());
-//        String content = gemini.chat(id, translator1);
-        String content2 = gemini.chat(id, aiMessageFormat);
-//        AiMessageFormat translator2 = geminiTranslateEN2CN.chat(content);
-        return content2;
-    }
+
 
     @Override
     public aiSearchFinalEntity aisearchNSFW(String id, AiMessageFormat aiMessageFormat) {

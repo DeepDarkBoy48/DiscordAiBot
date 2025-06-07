@@ -19,23 +19,20 @@ public class ChannelListener extends ListenerAdapter {
             return;
         }
         String result = null;
-        if (event.getChannel().getName().equals("ai游乐园")) {
+        if (event.getChannel().getName().equals("ai游乐园agent")) {
             MainChannelAIService mainChannelAIService = RegularConfig.getMainChannelAIService();
-             result = mainChannelAIService.aiPlayGround(event);
-        } else if (event.getChannel().getName().equals("mc百科")) {
-            ChannelAIService channelAIService = RegularConfig.getChannelAIService();
-             result = channelAIService.aiMc(event);
-        }else if (event.getChannel().getName().equals("deepseek")){
+             result = mainChannelAIService.aiPlayGroundAGENT(event);
+        } else if (event.getChannel().getName().equals("deepseek")){
             ChannelAIService channelAIService = RegularConfig.getChannelAIService();
              result = channelAIService.aiDeepseek(event);
         } else if (event.getChannel().getName().equals("招募ai")) {
             ChannelAIService channelAIService = RegularConfig.getChannelAIService();
              result = channelAIService.zhaomuAI(event);
-        } else if (event.getChannel().getName().equals("ai-测试")) {
-            MainChannelAIService mainChannelAIService = RegularConfig.getMainChannelAIServiceImplTest();
+        } else if (event.getChannel().getName().equals("ai游乐园mcp")) {
+            MainChannelAIService mainChannelAIService = RegularConfig.getMainChannelAIServiceImplMCP();
             try {
-                result = mainChannelAIService.aiPlayGroundTest(event);
-            } catch (NoSuchMethodException e) {
+                result = mainChannelAIService.aiPlayGroundMCP(event);
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }

@@ -4,5 +4,6 @@ src/main/resources/.env
 /target/
 /.mvn/
 /.idea/
-/discordbot2.iml/
+/discordbot.iml/
+/.vscode/
 

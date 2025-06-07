@@ -1,12 +1,13 @@
-package com.itheima.controller;
+package robin.discordbot.controller;
 
-import com.itheima.pojo.Article;
-import com.itheima.pojo.PageBean;
-import com.itheima.pojo.Result;
-import com.itheima.service.ArticleService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import robin.discordbot.pojo.entity.Article;
+import robin.discordbot.pojo.entity.Result;
+import robin.discordbot.service.ArticleService;
+import robin.discordbot.pojo.entity.PageBean;
 
 
 @RestController
@@ -22,14 +23,14 @@ public class ArticleController {
         return Result.success();
     }
 
-    @GetMapping
-    public Result<PageBean<Article>> list(
-            Integer pageNum,
-            Integer pageSize,
-            @RequestParam(required = false) Integer categoryId,
-            @RequestParam(required = false) String state
-    ) {
-       PageBean<Article> pb =  articleService.list(pageNum,pageSize,categoryId,state);
-       return Result.success(pb);
-    }
+   @GetMapping
+   public Result<PageBean<Article>> list(
+           Integer pageNum,
+           Integer pageSize,
+           @RequestParam(required = false) Integer categoryId,
+           @RequestParam(required = false) String state
+   ) {
+      PageBean<Article> pb =  articleService.list(pageNum,pageSize,categoryId,state);
+      return Result.success(pb);
+   }
 }

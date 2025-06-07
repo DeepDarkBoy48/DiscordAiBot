@@ -1,11 +1,6 @@
-package com.itheima.controller;
+package robin.discordbot.controller;
 
-import com.itheima.pojo.Result;
-import com.itheima.pojo.User;
-import com.itheima.service.UserService;
-import com.itheima.utils.JwtUtil;
-import com.itheima.utils.Md5Util;
-import com.itheima.utils.ThreadLocalUtil;
+
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +9,12 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import robin.discordbot.pojo.entity.User;
+import robin.discordbot.pojo.entity.Result;
+import robin.discordbot.service.UserService;
+import robin.discordbot.utils.JwtUtil;
+import robin.discordbot.utils.Md5Util;
+import robin.discordbot.utils.ThreadLocalUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,9 +26,10 @@ import java.util.concurrent.TimeUnit;
 public class UserController {
 
     @Autowired
-    private UserService userService;
-    @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/register")
     public Result register(@Pattern(regexp = "^\\S{5,16}$") String username, @Pattern(regexp = "^\\S{5,16}$") String password) {
@@ -61,9 +63,10 @@ public class UserController {
             claims.put("id", loginUser.getId());
             claims.put("username", loginUser.getUsername());
             String token = JwtUtil.genToken(claims);
-            //把token存储到redis中
-            ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
-            operations.set(token,token,1, TimeUnit.HOURS);
+            //使用redis存储token
+            ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
+            stringStringValueOperations.set(token, token,  1, TimeUnit.HOURS);
+
             return Result.success(token);
         }
         return Result.error("密码错误");
@@ -71,9 +74,8 @@ public class UserController {
 
     @GetMapping("/userInfo")
     public Result<User> userInfo(/*@RequestHeader(name = "Authorization") String token*/) {
-        //根据用户名查询用户
-       /* Map<String, Object> map = JwtUtil.parseToken(token);
-        String username = (String) map.get("username");*/
+//        //根据用户名查询用户
+//       Map<String, Object> map = JwtUtil.parseToken(token);
         Map<String, Object> map = ThreadLocalUtil.get();
         String username = (String) map.get("username");
         User user = userService.findByUserName(username);
@@ -93,7 +95,7 @@ public class UserController {
     }
 
     @PatchMapping("/updatePwd")
-    public Result updatePwd(@RequestBody Map<String, String> params,@RequestHeader("Authorization") String token) {
+    public Result updatePwd(@RequestBody Map<String, String> params, @RequestHeader("Authorization") String token) {
         //1.校验参数
         String oldPwd = params.get("old_pwd");
         String newPwd = params.get("new_pwd");
@@ -117,11 +119,13 @@ public class UserController {
             return Result.error("两次填写的新密码不一样");
         }
 
-        //2.调用service完成密码更新
-        userService.updatePwd(newPwd);
         //删除redis中对应的token
         ValueOperations<String, String> operations = stringRedisTemplate.opsForValue();
         operations.getOperations().delete(token);
+
+        //2.调用service完成密码更新
+        userService.updatePwd(newPwd);
         return Result.success();
     }
+
 }

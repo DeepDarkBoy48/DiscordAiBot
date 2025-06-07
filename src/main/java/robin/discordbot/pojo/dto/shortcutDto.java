@@ -1,4 +1,4 @@
-package robin.discordbot.apiPojo.dto;
+package robin.discordbot.pojo.dto;
 
 import lombok.Data;
 

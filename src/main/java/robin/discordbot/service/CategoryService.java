@@ -1,6 +1,8 @@
-package com.itheima.service;
+package robin.discordbot.service;
 
-import com.itheima.pojo.Category;
+
+
+import robin.discordbot.pojo.entity.Category;
 
 import java.util.List;
 

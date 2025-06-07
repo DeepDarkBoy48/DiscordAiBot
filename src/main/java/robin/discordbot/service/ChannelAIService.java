@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public interface ChannelAIService {
 
-    String aiMc(MessageReceivedEvent event);
 
     String aiDeepseek(MessageReceivedEvent event);
 

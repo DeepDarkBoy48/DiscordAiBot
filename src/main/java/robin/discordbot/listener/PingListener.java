@@ -15,7 +15,7 @@ public class PingListener extends ListenerAdapter {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         String message = event.getMessage().getContentRaw();
         
-        if (message.contains("ping")) {
+        if (message.contains("ping！")) {
             // Send bot image
             event.getChannel().sendMessage(BOT_IMAGE_URL).queue();
             // Send bot introduction

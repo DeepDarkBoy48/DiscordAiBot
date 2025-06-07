@@ -1,12 +1,13 @@
-package com.itheima.service.impl;
+package robin.discordbot.service.impl;
 
-import com.itheima.mapper.UserMapper;
-import com.itheima.pojo.User;
-import com.itheima.service.UserService;
-import com.itheima.utils.Md5Util;
-import com.itheima.utils.ThreadLocalUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import robin.discordbot.mapper.UserMapper;
+import robin.discordbot.pojo.entity.User;
+import robin.discordbot.service.UserService;
+import robin.discordbot.utils.Md5Util;
+import robin.discordbot.utils.ThreadLocalUtil;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -48,6 +49,4 @@ public class UserServiceImpl implements UserService {
         Integer id = (Integer) map.get("id");
         userMapper.updatePwd(Md5Util.getMD5String(newPwd),id);
     }
-
-
 }
