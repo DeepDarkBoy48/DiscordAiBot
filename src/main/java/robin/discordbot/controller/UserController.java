@@ -67,7 +67,7 @@ public class UserController {
             ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
             stringStringValueOperations.set(token, token,  1, TimeUnit.HOURS);
 
-            return Result.success(token);
+            return Result.success("登录成功",token);
         }
         return Result.error("密码错误");
     }

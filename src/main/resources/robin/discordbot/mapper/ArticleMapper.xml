@@ -18,4 +18,26 @@
             and create_user=#{userId}
         </where>
     </select>
+    <update id="update">
+        update article
+        <set>
+            <if test="title!=null and title!=''">
+                title=#{title},
+            </if>
+            <if test="content!=null and content!=''">
+                content=#{content},
+            </if>
+            <if test="coverImg!=null and coverImg!=''">
+                cover_img=#{coverImg},
+            </if>
+            <if test="state!=null and state!=''">
+                state=#{state},
+            </if>
+            <if test="categoryId!=null">
+                category_id=#{categoryId},
+            </if>
+            update_time=#{updateTime}
+        </set>
+        where id=#{id}
+    </update>
 </mapper>

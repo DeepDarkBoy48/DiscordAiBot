@@ -5,7 +5,7 @@ spring:
     name: discordbot2
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost/discordBot?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
+    url: jdbc:mysql://192.168.31.41:3306/discordBot?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
     #    url: jdbc:mysql://localhost/discordBot?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
     username: root
     password: 123
@@ -17,8 +17,7 @@ spring:
     redis:
       # 数据库
       database: 0
-      # 主机
-      host: 47.82.1.231
+      host: 192.168.31.41
       # 端口
       port: 6379
 #      # 密码

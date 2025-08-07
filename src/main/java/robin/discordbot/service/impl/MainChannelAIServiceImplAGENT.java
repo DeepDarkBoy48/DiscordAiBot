@@ -167,26 +167,26 @@ public class MainChannelAIServiceImplAGENT implements MainChannelAIService {
 //        }
 //
 //
-        @Tool("Get the gemini api key usage count")
-        String getGeminiApiKeyUsageCount() {
-            TreeMap<String, Integer> treeMap = new TreeMap<>();
-            String[] geminiAccounts = new String[4];
-            geminiAccounts[0] = "zuiquan200818@gmail.com";
-            geminiAccounts[1] = "warghost200818@gmail.com";
-            geminiAccounts[2] = "xuchenyang36robin@gmail.com";
-            geminiAccounts[3] = "essnoto605@gmail.com";
-            Integer totalCount = 0;
-            List<gemini_api_key_entity> allGeminiApiKeys = mainChannelServiceImplTestMapper.getAllGeminiApiKeys();
-            int i = 0;
-            for (gemini_api_key_entity geminiApiKeyEntity : allGeminiApiKeys) {
-                treeMap.put(geminiAccounts[i], geminiApiKeyEntity.getUsageCount());
-                totalCount += geminiApiKeyEntity.getUsageCount();
-                i++;
-            }
-            String usage = treeMap.toString();
-            usage = "每个账号剩余使用的次数: " + usage + "\n" + "总剩余次数: " + totalCount;
-            return usage;
-        }
+//        @Tool("Get the gemini api key usage count")
+//        String getGeminiApiKeyUsageCount() {
+//            TreeMap<String, Integer> treeMap = new TreeMap<>();
+//            String[] geminiAccounts = new String[4];
+//            geminiAccounts[0] = "zuiquan200818@gmail.com";
+//            geminiAccounts[1] = "warghost200818@gmail.com";
+//            geminiAccounts[2] = "xuchenyang36robin@gmail.com";
+//            geminiAccounts[3] = "essnoto605@gmail.com";
+//            Integer totalCount = 0;
+//            List<gemini_api_key_entity> allGeminiApiKeys = mainChannelServiceImplTestMapper.getAllGeminiApiKeys();
+//            int i = 0;
+//            for (gemini_api_key_entity geminiApiKeyEntity : allGeminiApiKeys) {
+//                treeMap.put(geminiAccounts[i], geminiApiKeyEntity.getUsageCount());
+//                totalCount += geminiApiKeyEntity.getUsageCount();
+//                i++;
+//            }
+//            String usage = treeMap.toString();
+//            usage = "每个账号剩余使用的次数: " + usage + "\n" + "总剩余次数: " + totalCount;
+//            return usage;
+//        }
 
         @Tool("create a new AGENT with the system prompt and insert it into the database")
         String createAGENT(@P("SYSTEM PROMPT") String systemPrompt, @P("UserName") String UserName) {
@@ -345,6 +345,14 @@ public class MainChannelAIServiceImplAGENT implements MainChannelAIService {
         String clearChatMemory() {
             chatMemory.clear();
             return "Chat memory cleared.";
+        }
+
+
+        // 刷新gemini轮询池
+        @Tool("renew gemini api key pool, return the key with usage times ")
+        List<gemini_api_key_entity> renewGeminiApiKeyPool() {
+            List<gemini_api_key_entity> geminiApiKeyEntities = GeminiFactory.updateGeminiApiKey();
+            return geminiApiKeyEntities;
         }
 
     }

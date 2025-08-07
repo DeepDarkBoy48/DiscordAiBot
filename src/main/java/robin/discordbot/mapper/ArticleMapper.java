@@ -1,6 +1,7 @@
 package robin.discordbot.mapper;
 
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import robin.discordbot.pojo.entity.Article;
@@ -16,4 +17,9 @@ public interface ArticleMapper {
 
 
     List<Article> list(Integer userId, Integer categoryId, String state);
+
+    void update(Article article);
+
+    @Delete("delete from article where id=#{id}")
+    void delete(Long id);
 }

@@ -22,5 +22,7 @@ public class gemini11 {
                 .chatLanguageModel(model)// 系统提示词 [2]
                 .build();
         System.out.println(aiPlayGroundTest.chat("你写一个jojo的梗"));
+        
+
     }
 }

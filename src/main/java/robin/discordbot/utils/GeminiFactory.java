@@ -36,6 +36,15 @@ public class GeminiFactory {
         }
     }
 
+    public static List<gemini_api_key_entity> updateGeminiApiKey() {
+        List<gemini_api_key_entity> allGeminiApiKeys = mainChannelServiceImplTestMapper.getAllGeminiApiKeys();
+        currentKeyIndex = mainChannelServiceImplTestMapper.getGeminiApiKeyByEnable().getId() - 1;
+        for (gemini_api_key_entity geminiApiKeyEntity : allGeminiApiKeys) {
+            geminiApiKeys.add(geminiApiKeyEntity.getApiKey());
+        }
+        return allGeminiApiKeys;
+    }
+
     // 修改 getGeminiToken 方法以实现轮换逻辑
     public static synchronized String getGeminiToken() { // 添加 synchronized 保证线程安全
         if (geminiApiKeys == null || geminiApiKeys.isEmpty()) {
