@@ -29,4 +29,7 @@ public interface UserMapper {
 
     @Update("update user set password=#{md5String},update_time=now() where id=#{id}")
     void updatePwd(String md5String, Integer id);
+
+    @Select("select * from user where id=#{id}")
+    User getById(int id);
 }

@@ -19,6 +19,7 @@ import dev.langchain4j.service.UserMessage;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import robin.discordbot.mapper.AiMapper;
 import robin.discordbot.mapper.MainChannelServiceImplTestMapper;
+import robin.discordbot.pojo.entity.User;
 import robin.discordbot.pojo.entity.aiEntity.aiPrompt;
 import robin.discordbot.pojo.entity.aiEntity.gemini_api_key_entity;
 import robin.discordbot.service.MainChannelAIService;
@@ -359,6 +360,11 @@ public class MainChannelAIServiceImplAGENT implements MainChannelAIService {
 
     @Override
     public String aiPlayGroundMCP(MessageReceivedEvent event) {
+        return null;
+    }
+
+    @Override
+    public String aiWebAGENT(User user, String message) {
         return null;
     }
 

@@ -28,6 +28,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import robin.discordbot.mapper.AiMapper;
 import robin.discordbot.mapper.MainChannelServiceImplTestMapper;
+import robin.discordbot.pojo.entity.User;
 import robin.discordbot.pojo.entity.aiEntity.aiPrompt;
 import robin.discordbot.pojo.entity.aiEntity.gemini_api_key_entity;
 import robin.discordbot.service.ApiService;
@@ -354,6 +355,8 @@ public class MainChannelAIServiceImplMCP implements MainChannelAIService {
     }
 
 
+
+
     class toolbox {
         public record WeatherForecast(
                 String location,
@@ -574,5 +577,10 @@ public class MainChannelAIServiceImplMCP implements MainChannelAIService {
     public String aiPlayGroundAGENT(MessageReceivedEvent event) {
         // TODO: Implement asynchronous logic if this method also performs long-running AI operations
         return null; // Or supplyAsync if it becomes complex
+    }
+
+    @Override
+    public String aiWebAGENT(User user, String message) {
+        return null;
     }
 }

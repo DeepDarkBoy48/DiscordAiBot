@@ -20,7 +20,7 @@ public class ChannelListener extends ListenerAdapter {
         }
         String result = null;
         if (event.getChannel().getName().equals("ai游乐园agent")) {
-            MainChannelAIService mainChannelAIService = RegularConfig.getMainChannelAIService();
+            MainChannelAIService mainChannelAIService = RegularConfig.getMainChannelAIServiceImplAGENT();
              result = mainChannelAIService.aiPlayGroundAGENT(event);
         } else if (event.getChannel().getName().equals("deepseek")){
             ChannelAIService channelAIService = RegularConfig.getChannelAIService();

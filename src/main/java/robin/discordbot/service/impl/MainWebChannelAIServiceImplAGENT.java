@@ -1,13 +1,5 @@
 package robin.discordbot.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.memory.ChatMemory;
@@ -17,15 +9,22 @@ import dev.langchain4j.model.googleai.GoogleAiGeminiChatModel;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.UserMessage;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import robin.discordbot.mapper.AiMapper;
 import robin.discordbot.mapper.MainChannelServiceImplTestMapper;
+import robin.discordbot.pojo.entity.User;
 import robin.discordbot.pojo.entity.aiEntity.aiPrompt;
 import robin.discordbot.pojo.entity.aiEntity.gemini_api_key_entity;
 import robin.discordbot.service.MainChannelAIService;
 import robin.discordbot.utils.GeminiFactory;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+
 @Service
-public class MainChannelAIServiceImplAGENT implements MainChannelAIService {
+public class MainWebChannelAIServiceImplAGENT implements MainChannelAIService {
 
     @Autowired
     private AiMapper aiMapper;
@@ -44,9 +43,9 @@ public class MainChannelAIServiceImplAGENT implements MainChannelAIService {
 
 
     @Override
-    public String aiPlayGroundAGENT(MessageReceivedEvent event) {
-        String contentRaw = event.getMessage().getContentRaw();
-        String UserName = event.getAuthor().getGlobalName();
+    public String aiWebAGENT(User user,String message) {
+        String contentRaw = message;
+        String UserName = user.getNickname();
         String systemMessage = "";
         String modelName = "";
 
@@ -74,7 +73,7 @@ public class MainChannelAIServiceImplAGENT implements MainChannelAIService {
 
         if (contentRaw != null && contentRaw.startsWith("@M ")) {
             modelName = contentRaw.substring(3);
-            String globalName = event.getAuthor().getGlobalName();
+            String globalName = UserName;
             LocalDateTime now = LocalDateTime.now();
             Integer id = aiEntity.getId();
             aiPrompt aiPrompt = new aiPrompt(1, globalName, now, modelName);
@@ -83,7 +82,7 @@ public class MainChannelAIServiceImplAGENT implements MainChannelAIService {
         }
         if (contentRaw != null && contentRaw.startsWith("@S ")) {
             systemMessage = contentRaw.substring(3);
-            String globalName = event.getAuthor().getGlobalName();
+            String globalName = UserName;
             LocalDateTime now = LocalDateTime.now();
             aiPrompt aiPrompt = new aiPrompt(systemMessage, globalName, now, "gemini-2.5-pro-exp-03-25", "AGENT", 1);
             // 所有agent都关闭
@@ -355,6 +354,11 @@ public class MainChannelAIServiceImplAGENT implements MainChannelAIService {
             return geminiApiKeyEntities;
         }
 
+    }
+
+    @Override
+    public String aiPlayGroundAGENT(MessageReceivedEvent event) {
+        return "";
     }
 
     @Override

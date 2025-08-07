@@ -18,4 +18,6 @@ public interface UserService {
 
     //更新密码
     void updatePwd(String newPwd);
+
+    User getUserById(int i);
 }
