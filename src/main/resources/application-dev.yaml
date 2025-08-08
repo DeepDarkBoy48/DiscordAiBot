@@ -21,7 +21,7 @@ spring:
       # 端口
       port: 6379
 #      # 密码
-#      password: 123
+      password: 123
       # 读超时
       timeout: 5s
       # 连接超时

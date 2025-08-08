@@ -3,11 +3,7 @@ package robin.discordbot.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
-import robin.discordbot.service.ChannelAIService;
-import robin.discordbot.service.LangChain4jService;
-import robin.discordbot.service.MainChannelAIService;
-import robin.discordbot.service.UserService;
+import robin.discordbot.service.*;
 
 @Component
 public class RegularConfig {
@@ -18,16 +14,18 @@ public class RegularConfig {
     private static MainChannelAIService mainChannelAIServiceImplMCP;
     private static UserService userService;
     private static MainChannelAIService mainWebChannelAIServiceImplAGENT;
+    private static ChatMessageService chatMessageService;
 
     @Autowired
     public void SetRegularConfig(LangChain4jService langChain4jService, ChannelAIService channelAIService, UserService userService,
-                                 @Qualifier("mainChannelAIServiceImplAGENT") MainChannelAIService mainChannelAIServiceImplAGENT, @Qualifier("mainChannelAIServiceImplMCP") MainChannelAIService mainChannelAIServiceImplMCP,@Qualifier("mainWebChannelAIServiceImplAGENT") MainChannelAIService mainWebChannelAIServiceImplAGENT) {
+                                 @Qualifier("mainChannelAIServiceImplAGENT") MainChannelAIService mainChannelAIServiceImplAGENT, @Qualifier("mainChannelAIServiceImplMCP") MainChannelAIService mainChannelAIServiceImplMCP,@Qualifier("mainWebChannelAIServiceImplAGENT") MainChannelAIService mainWebChannelAIServiceImplAGENT, ChatMessageService chatMessageService) {
         RegularConfig.langChain4jService = langChain4jService;
         RegularConfig.channelAIService = channelAIService;
         RegularConfig.mainChannelAIServiceImplAGENT = mainChannelAIServiceImplAGENT;
         RegularConfig.mainChannelAIServiceImplMCP = mainChannelAIServiceImplMCP;
         RegularConfig.mainWebChannelAIServiceImplAGENT = mainWebChannelAIServiceImplAGENT;
         RegularConfig.userService = userService;
+        RegularConfig.chatMessageService = chatMessageService;
     }
 
     public static LangChain4jService getLangchain4jservice() {
@@ -53,4 +51,7 @@ public class RegularConfig {
         return mainWebChannelAIServiceImplAGENT;
     }
 
+    public static ChatMessageService getChatMessageService() {
+        return chatMessageService;
+    }
 }
