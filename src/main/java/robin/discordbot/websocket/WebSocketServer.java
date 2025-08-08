@@ -15,20 +15,13 @@ import robin.discordbot.service.MainChannelAIService;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * WebSocket服务
- */
-//
-   //  awdawda
-//
 @Component
 @ServerEndpoint("/chat/{sid}")
-
 public class WebSocketServer {
 
-    // Store the session of each user
-    private static Map<String, Session> sessionMap = new HashMap();
+    private static Map<String, Session> sessionMap = new ConcurrentHashMap<>();
     private User user;
 
     /**
