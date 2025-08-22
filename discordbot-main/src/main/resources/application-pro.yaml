@@ -1,0 +1,55 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: discordbot2
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://appnet:3306/discordBot?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
+    username: root
+    password: 123
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 100MB
+  data:
+    redis:
+      # 数据库
+      database: 0
+      # 主机
+      host: appnet
+      # 端口
+      port: 6379
+#      # 密码
+      password: 123
+      # 读超时
+      timeout: 5s
+      # 连接超时
+      connect-timeout: 5s
+
+# Cloudflare R2 对象存储配置
+cloudflare:
+  r2:
+    # 在 Cloudflare Dashboard 中创建的 R2 API Token
+    access-key: "d8494594bcbbbd37d1fab7df3b826c1d"
+    secret-key: "d91afea6f5219f283876ad5a4ef6dbed0efc905c0aeb0adc3869071f0623216f"
+    # R2 存储桶的端点地址
+    endpoint: "https://91be0859e7c00e3a3b377c0d5f36f6d2.r2.cloudflarestorage.com"
+    # 存储桶名称
+    bucket-name: "deepdarkstorage"
+    # 可选：自定义域名（用于生成文件访问 URL）
+    custom-domain: "https://your-custom-domain.com"
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+openai:
+  api:
+    url: https://api.openai.com/v1/chat/completions
+
+# 日志配置
+logging:
+  level:
+    robin.discordbot.service.CloudflareR2Service: DEBUG
+    software.amazon.awssdk.services.s3: DEBUG

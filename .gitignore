@@ -7,3 +7,15 @@ src/main/resources/.env
 /discordbot.iml/
 /.vscode/
 
+# Maven build directories
+target/
+*/target/
+
+# Environment files with sensitive data
+.env.local
+.env.production
+**/.env.local
+**/.env.production
+
+# IDE files
+.DS_Store
