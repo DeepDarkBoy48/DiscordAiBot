@@ -19,3 +19,4 @@ target/
 
 # IDE files
 .DS_Store
+discordbot-main/src/main/resources/.env
