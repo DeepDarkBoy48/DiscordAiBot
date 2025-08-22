@@ -16,6 +16,7 @@ public class JwtUtil {
                 .withClaim("claims", claims)
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 ))
                 .sign(Algorithm.HMAC256(KEY));
+
     }
 
 	//接收token,验证token,并返回业务数据

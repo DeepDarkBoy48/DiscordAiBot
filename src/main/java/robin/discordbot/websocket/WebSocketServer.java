@@ -1,6 +1,7 @@
 package robin.discordbot.websocket;
 
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnMessage;
 import jakarta.websocket.OnOpen;
@@ -55,6 +56,11 @@ public class WebSocketServer {
     public void onMessage(String message, @PathParam("sid") String sid) {
         System.out.println("receive message from client: " + sid + " (" + this.user.getNickname() + "): " + message);
 
+        // 如果是心跳消息，则直接返回，不处理
+        if (isPingMessage(message)) {
+            return;
+        }
+
         // Broadcast user message
         JSONObject userMessage = new JSONObject();
         userMessage.set("from", this.user.getNickname());
@@ -92,6 +98,23 @@ public class WebSocketServer {
             disconnectMessage.set("from", "server");
             disconnectMessage.set("message", "<strong>" + this.user.getNickname() + "</strong> has left the chat.<br>");
             broadcast(disconnectMessage.toString());
+        }
+    }
+
+    /**
+     * 判断是否为心跳消息
+     * @param message 消息内容
+     * @return true如果是，false如果不是
+     */
+    private boolean isPingMessage(String message) {
+        try {
+            // 使用cn.hutool.json.JSONUtil解析JSON字符串
+            JSONObject json = JSONUtil.parseObj(message);
+            // 检查是否存在"type"字段且其值为"ping"
+            return "ping".equals(json.getStr("type"));
+        } catch (Exception e) {
+            // 解析失败或格式不符，不是心跳消息
+            return false;
         }
     }
 

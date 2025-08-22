@@ -5,7 +5,7 @@ spring:
     name: discordbot2
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.79.145.141:3306/discordBot?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
+    url: jdbc:mysql://appnet:3306/discordBot?sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
     username: root
     password: 123
   servlet:
@@ -17,7 +17,7 @@ spring:
       # 数据库
       database: 0
       # 主机
-      host: 47.79.145.141
+      host: appnet
       # 端口
       port: 6379
 #      # 密码

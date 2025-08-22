@@ -84,7 +84,7 @@ public class MainWebChannelAIServiceImplAGENT implements MainChannelAIService {
             systemMessage = contentRaw.substring(3);
             String globalName = UserName;
             LocalDateTime now = LocalDateTime.now();
-            aiPrompt aiPrompt = new aiPrompt(systemMessage, globalName, now, "gemini-2.5-pro-exp-03-25", "AGENT", 1);
+            aiPrompt aiPrompt = new aiPrompt(systemMessage, globalName, now, "gemini-2.5-flash", "AGENT", 1);
             // 所有agent都关闭
             aiMapper.unenableALL("AGENT");
             aiMapper.addAi(aiPrompt);
@@ -135,7 +135,7 @@ public class MainWebChannelAIServiceImplAGENT implements MainChannelAIService {
         System.out.println("contentRaw: " + contentRaw);
 
         try {
-            String chat = aiPlayGroundTest.chat(UserName +"说"+ contentRaw);
+            String chat = aiPlayGroundTest.chat("{User:"+UserName+",\n UserMessage:"+ contentRaw+"}");
             mainChannelServiceImplTestMapper.updateGeminiApiKeyUsageCount(apiKey, LocalDateTime.now());
             return chat;
         } catch (Exception e) {
